@@ -1,0 +1,15 @@
+#Configuracion de base de datos:
+database:
+  address: ""
+  port:
+  database: ""
+  user: ""
+  password: ""
+
+#Configuracion de mundos
+worlds:
+  example:
+      min_players: 2
+      max_players: 16
+      ball_spawn: []
+      player_spawns: []

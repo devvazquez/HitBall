@@ -1,0 +1,27 @@
+# lang_es.yml
+prefix: "&d&lGalactic&5&lMC &8&l»"
+player_join: "&f[&a+&f"]&b %player_name%&a se ha unido a la partida!"
+player_leave: "%f[&c-6f]&b %player_name%&c ha abandonado la partida!"
+#Waiting state
+waiting_30: "%prefix% &a¡Esperando a más jugadores &e(30s)!"
+waiting_15: "%prefix% &a¡Esperando a más jugadores &e(15s)!"
+waiting_5: "%prefix% &a¡Esperando a más jugadores &e(%segundos%&e)&a!"
+waiting_title: "Esperando a los jugadores..."
+game_full: "%prefix% &c¡Lo siento! La sala esta llena!"
+game_countdown: "El juego empieza en"
+game_start: "¡El juego ha comenzado!"
+restore_countdown: "%prefix% &c¡Faltan jugadores para alcanzar el mínimo!, RESTAURANDO LA CUENTA ATRÁS...!"
+spawn_tp: "%prefix% &a¡Enviándote al spawn!"
+#Playing state
+player_kill_chat: "%aEl jugador &b%killer_player%&a ha matado a &c%killed_player%"
+player_death_chat: "&aEl jugador &b%killed_player%&a ha muerto"
+player_kill_action_bar: "&a¡Has matado a %killed_player%!"
+player_death_action_bar: "&c¡Has sido eliminado por %killer_name%!"
+player_death_action_bar_no_killer: "&c¡Has sido eliminado!"
+death_title: "&c¡HAS MUERTO!"
+win_title: "&a¡HAS GANADO!"
+shield_cooldown: "&c¡El escudo se está enfriando!"
+shield_active: "¡Escudo Activo!"
+player_leave_stop: "%prefix%&b %player_name% &c¡Ha abandonado la partida y no es posible continuar!"
+#Habilities
+revive_cant_use: "&c¡Solo puedes utilizar la habilidad cuando estés muerto!"

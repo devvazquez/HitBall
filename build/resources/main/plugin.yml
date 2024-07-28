@@ -1,0 +1,6 @@
+name: HitBall
+version: '1.0-SNAPSHOT'
+main: dev.galacticmc.hitball.HitBallPlugin
+api-version: '1.16'
+load: STARTUP
+softdepend: [PlaceholderAPI]
