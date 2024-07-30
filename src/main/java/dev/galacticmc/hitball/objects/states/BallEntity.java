@@ -1,14 +1,10 @@
-package dev.galacticmc.hitball.objects;
+package dev.galacticmc.hitball.objects.states;
 
 import dev.lone.itemsadder.api.CustomBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class BallEntity{
 

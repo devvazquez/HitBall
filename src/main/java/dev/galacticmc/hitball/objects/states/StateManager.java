@@ -3,7 +3,6 @@ package dev.galacticmc.hitball.objects.states;
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.SpawnLocations;
 import dev.galacticmc.hitball.objects.skills.SkillManager;
 import dev.galacticmc.hitball.objects.states.impl.WaitingState;
 import org.bukkit.GameMode;
@@ -152,9 +151,6 @@ public class StateManager implements Listener {
     public void playerInteract(PlayerInteractEvent event) {
         if(event.getPlayer().getWorld() != miniGameWorld) return;
         currentGameState.playerInteract(event);
-        if(event.getPlayer().getInventory().getItemInMainHand() != null){
-
-        }
     }
 
     @EventHandler

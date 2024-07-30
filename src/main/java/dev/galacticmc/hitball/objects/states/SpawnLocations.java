@@ -1,4 +1,4 @@
-package dev.galacticmc.hitball.objects;
+package dev.galacticmc.hitball.objects.states;
 
 import org.bukkit.Location;
 

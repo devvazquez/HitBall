@@ -1,6 +1,7 @@
-package dev.galacticmc.hitball.objects;
+package dev.galacticmc.hitball.objects.managers;
 
 import dev.galacticmc.hitball.HitBallPlugin;
+import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;

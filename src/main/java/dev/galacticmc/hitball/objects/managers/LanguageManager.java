@@ -1,4 +1,4 @@
-package dev.galacticmc.hitball.objects;
+package dev.galacticmc.hitball.objects.managers;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import org.bukkit.configuration.file.FileConfiguration;

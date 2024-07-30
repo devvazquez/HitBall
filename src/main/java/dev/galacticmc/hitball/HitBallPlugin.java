@@ -7,15 +7,11 @@ import dev.galacticmc.hitball.commands.impl.BallSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.PlayerSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.ReloadSubCommand;
 import dev.galacticmc.hitball.commands.impl.TeleportCommand;
-import dev.galacticmc.hitball.objects.ConfigManager;
+import dev.galacticmc.hitball.objects.managers.ConfigManager;
 import dev.galacticmc.hitball.objects.Database;
 import dev.galacticmc.hitball.objects.HitBallExpansion;
-import dev.galacticmc.hitball.objects.LanguageManager;
-import dev.galacticmc.hitball.objects.WorldManager;
-import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.Events.ItemsAdderLoadDataEvent;
-import dev.lone.itemsadder.api.ItemsAdder;
-import dev.lone.itemsadder.api.NotActuallyItemsAdderException;
+import dev.galacticmc.hitball.objects.managers.LanguageManager;
+import dev.galacticmc.hitball.objects.managers.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,7 +48,6 @@ public final class HitBallPlugin extends JavaPlugin {
         TODO:
          - Add chest gui to see available swords.
          - Check for ia item on hand interact
-         - Añadir pechera.
      */
 
     @Override

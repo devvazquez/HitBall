@@ -1,11 +1,9 @@
 package dev.galacticmc.hitball.util;
 
 import com.google.common.collect.ImmutableMap;
-import dev.galacticmc.hitball.objects.SpawnLocations;
 import dev.galacticmc.hitball.raytracing.AABB;
 import dev.galacticmc.hitball.raytracing.Ray;
 import org.bukkit.*;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 

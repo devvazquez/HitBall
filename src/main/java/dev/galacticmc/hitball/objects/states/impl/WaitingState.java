@@ -3,7 +3,7 @@ package dev.galacticmc.hitball.objects.states.impl;
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
-import dev.galacticmc.hitball.objects.SpawnLocations;
+import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import org.bukkit.*;

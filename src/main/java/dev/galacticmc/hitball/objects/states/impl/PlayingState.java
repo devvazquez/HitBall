@@ -6,15 +6,18 @@ import dev.galacticmc.hitball.objects.states.HitBallPlayer;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import dev.galacticmc.hitball.util.Utils;
-import dev.galacticmc.hitball.objects.BallEntity;
-import dev.galacticmc.hitball.objects.SpawnLocations;
+import dev.galacticmc.hitball.objects.states.BallEntity;
+import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
+import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.FireworkEffect;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -248,11 +251,23 @@ public class PlayingState implements GameState {
 
     @Override
     public void playerInteract(PlayerInteractEvent event) {
-        if (!(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)) return;
-        HitBallPlayer player = stateManager.getHitBallPlayer(event.getPlayer());
-        if (!player.getProperties().isShieldActive()) {
-            player.getProperties().activateShield();
+        Player player = event.getPlayer();
+        HitBallPlayer hitBallPlayer = stateManager.getHitBallPlayer(player);
+        //Sword click
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
+            ItemStack inMainHand = player.getInventory().getItemInMainHand();
+            if(CustomStack.byItemStack(inMainHand) == null) return;
+            if (!hitBallPlayer.getProperties().isShieldActive()) {
+                hitBallPlayer.getProperties().activateShield();
+            }
         }
+        //Skill click
+        else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
+            if(!hitBallPlayer.hasSkill()) return;
+            if(!player.getInventory().getItemInOffHand().equals(hitBallPlayer.getCurrentSkill().getIcon())) return;
+            hitBallPlayer.getCurrentSkill().executeSkill(player.getUniqueId());
+        }
+
     }
 
 
