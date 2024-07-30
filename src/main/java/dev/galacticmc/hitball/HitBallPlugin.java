@@ -47,7 +47,6 @@ public final class HitBallPlugin extends JavaPlugin {
     /*
         TODO:
          - Add chest gui to see available swords.
-         - Check for ia item on hand interact
      */
 
     @Override

@@ -11,10 +11,13 @@ import java.util.UUID;
 
 public abstract class Skill{
 
-    public HitBallPlugin plugin;
-    public StateManager stateManager;
-    public ItemStack icon;
+    private HitBallPlugin plugin;
+    private StateManager stateManager;
+    public StateManager getStateManager() {
+        return stateManager;
+    }
 
+    private ItemStack icon;
     public void setItemIcon(ItemStack m){
         this.icon = m;
     }

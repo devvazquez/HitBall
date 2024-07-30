@@ -26,7 +26,7 @@ public class ReviveSkill extends Skill {
 
     @Override
     public void perfomSkill(UUID self) {
-        PlayingState state = (PlayingState)stateManager.getCurrentGameState();
+        PlayingState state = (PlayingState)getStateManager().getCurrentGameState();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ReviveSkill extends Skill {
         Player player = Bukkit.getPlayer(uuid);
         if(player != null){
             if( player.isInvisible()
-                && stateManager.getCurrentGameState() instanceof PlayingState){
+                && getStateManager().getCurrentGameState() instanceof PlayingState){
                 return true;
             }else {
                 player.sendMessage(LangKey.REVIVE_CANT_USE.formatted());

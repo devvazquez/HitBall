@@ -21,12 +21,15 @@ import java.util.UUID;
 public class HitBallPlayer {
 
     private final HitBallPlugin plugin;
-    public HitBallPlugin getPlugin(){
-        return plugin;
-    }
     private final UUID self;
     private final List<Skill> skills;
     private final Skill selectedSkill;
+    public boolean hasSkill(){
+        return selectedSkill != null;
+    }
+    public Skill getCurrentSkill(){
+        return selectedSkill;
+    }
     private InGameProperties properties;
 
     public InGameProperties getProperties() {
@@ -54,7 +57,7 @@ public class HitBallPlayer {
         if(inGame) throw new IllegalStateException(String.format("Player is already in-game! (%s)", getSelf().getName()));
         if(properties != null) throw new IllegalStateException(String.format("Player already has in-game properties! (%s)", getSelf().getName()));
         this.inGame = true;
-        this.properties = new InGameProperties(this);
+        this.properties = new InGameProperties(this, plugin);
     }
 
     public void leaveGame(){

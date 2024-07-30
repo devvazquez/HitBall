@@ -2,13 +2,18 @@ package dev.galacticmc.hitball.objects.states;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
+import dev.galacticmc.hitball.objects.swords.Sword;
+import dev.lone.itemsadder.api.CustomStack;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -17,17 +22,32 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class InGameProperties {
 
     private final HitBallPlugin plugin;
+    private final HitBallPlayer player;
 
     private boolean dead = false;
     private boolean shielded = false;
-    private BossBar bossBar;
+    private final BossBar bossBar;
+    private final ItemStack chestPlate;
 
     private static final long SHIELD_DURATION = 3000; // 3 seconds
     private long DEACTIVATE_SHIELD = 0;
 
-    public InGameProperties(HitBallPlayer player) {
-        this.plugin = player.getPlugin();
+    public InGameProperties(HitBallPlayer player, HitBallPlugin plugin) {
+        this.player = player;
+        this.plugin = plugin;
         this.bossBar = Bukkit.createBossBar(LangKey.SHIELD_ACTIVE.value, BarColor.BLUE, BarStyle.SOLID);
+        this.chestPlate =  new ItemStack(Material.LEATHER_CHESTPLATE);
+
+        LeatherArmorMeta meta = (LeatherArmorMeta) chestPlate.getItemMeta();
+        meta.setColor(Color.WHITE);
+        meta.displayName(Component.text("Escudo"));
+        chestPlate.setItemMeta(meta);
+
+        ItemStack sword = CustomStack.getInstance("the_sword_of_the_storm").getItemStack();
+        player.getSelf().getInventory().setItem(4, sword);
+        if(player.hasSkill()){
+            player.getSelf().getInventory().setItemInOffHand(player.getCurrentSkill().getIcon());
+        }
     }
 
     public boolean isAlive() {
@@ -36,14 +56,14 @@ public class InGameProperties {
 
     public void kill() {
         this.dead = true;
-        removePlayerHeadHelmet();
+        devisualizeShield();
         enableFakeSpectatorMode();
     }
 
     public void reset() {
         // Reset player state
         this.dead = false;
-        removePlayerHeadHelmet();
+        devisualizeShield();
         disableFakeSpectatorMode();
     }
 
@@ -53,7 +73,7 @@ public class InGameProperties {
 
     public void activateShield() {
         this.shielded = true;
-        addPlayerHeadHelmet();
+        visualizeShield();
         showShieldBossBar();
         this.DEACTIVATE_SHIELD = System.currentTimeMillis() + SHIELD_DURATION;
         new BukkitRunnable() {
@@ -80,66 +100,62 @@ public class InGameProperties {
 
     public void deactivateShield() {
         this.shielded = false;
-        bossBar.removePlayer(getSelf());
+        bossBar.removePlayer(player.getSelf());
         bossBar.setVisible(false);
-        removePlayerHeadHelmet();
+        devisualizeShield();
     }
 
     // Add a player head helmet with a custom texture value
-    private void addPlayerHeadHelmet() {
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD); // Create a new ItemStack of the Player Head type.
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta(); // Get the created item's ItemMeta and cast it to SkullMeta so we can access the skull properties
-        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer("Triumphus")); // Set the skull's owner so it will adapt the skin of the provided username (case sensitive).
-        skull.setItemMeta(skullMeta); // Apply the modified meta to the initial created item
-        getSelf().getInventory().setHelmet(skull);
+    private void visualizeShield() {
+        player.getSelf().getInventory().setChestplate(chestPlate);
     }
 
-    private void removePlayerHeadHelmet() {
-        getSelf().getInventory().setHelmet(new ItemStack(Material.AIR));
+    private void devisualizeShield() {
+        player.getSelf().getInventory().setChestplate(null);
     }
 
     public void showShieldBossBar() {
-        bossBar.addPlayer(getSelf());
+        bossBar.addPlayer(player.getSelf());
         bossBar.setVisible(true);
     }
 
     public void hideShieldBossBar() {
-        bossBar.removePlayer(getSelf());
+        bossBar.removePlayer(player.getSelf());
         bossBar.setVisible(false);
     }
 
     public void enableFakeSpectatorMode() {
         // Make player invisible
-        getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
+        player.getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
 
         // Allow flying and set fly speed
-        getSelf().setAllowFlight(true);
-        getSelf().setFlying(true);
-        getSelf().setFlySpeed(0.1f);
+        player.getSelf().setAllowFlight(true);
+        player.getSelf().setFlying(true);
+        player.getSelf().setFlySpeed(0.1f);
 
         // Disable damage
-        getSelf().setInvulnerable(true);
+        player.getSelf().setInvulnerable(true);
 
         // Hide the player from all other players
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.hidePlayer(plugin, getSelf());
+            onlinePlayer.hidePlayer(plugin, player.getSelf());
         }
     }
 
     public void disableFakeSpectatorMode() {
         // Remove invisibility
-        getSelf().removePotionEffect(PotionEffectType.INVISIBILITY);
+        player.getSelf().removePotionEffect(PotionEffectType.INVISIBILITY);
 
         // Disable flying
-        getSelf().setAllowFlight(false);
-        getSelf().setFlying(false);
+        player.getSelf().setAllowFlight(false);
+        player.getSelf().setFlying(false);
 
         // Enable damage
-        getSelf().setInvulnerable(false);
+        player.getSelf().setInvulnerable(false);
 
         // Show the player to all other players
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.showPlayer(plugin, getSelf());
+            onlinePlayer.showPlayer(plugin, player.getSelf());
         }
     }
 
