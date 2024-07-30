@@ -15,5 +15,4 @@ public interface GameState extends Listener {
     void playerLeave(Player player);
     void playerMove(PlayerMoveEvent event);
     void playerInteract(PlayerInteractEvent event);
-    abstract void fallingBlockDie(EntityRemoveFromWorldEvent event);
 }

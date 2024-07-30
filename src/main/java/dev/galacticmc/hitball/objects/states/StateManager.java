@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.EntityBlockFormEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 
@@ -153,15 +155,23 @@ public class StateManager implements Listener {
         currentGameState.playerInteract(event);
     }
 
+    // - EVENT HOOKS -
+
     @EventHandler
-    public void openInv(InventoryOpenEvent event){
+    public void openInventory(InventoryOpenEvent event){
         if(event.getPlayer().getWorld() != miniGameWorld) return;
         event.setCancelled(true);
     }
 
     @EventHandler
-    public void fallingBlockDie(EntityRemoveFromWorldEvent event) {
-
+    public void inventoryDrag(InventoryDragEvent event){
+        if(event.getWhoClicked().getWorld() != miniGameWorld) return;
+        event.setCancelled(true);
     }
 
+    @EventHandler
+    public void fallingBlockSolidify(EntityBlockFormEvent event){
+        if(event.getEntity().getWorld() != miniGameWorld) return;
+        event.setCancelled(true);
+    }
 }

@@ -5,6 +5,8 @@ import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.swords.Sword;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -13,6 +15,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
@@ -38,16 +41,29 @@ public class InGameProperties {
         this.bossBar = Bukkit.createBossBar(LangKey.SHIELD_ACTIVE.value, BarColor.BLUE, BarStyle.SOLID);
         this.chestPlate =  new ItemStack(Material.LEATHER_CHESTPLATE);
 
+        //Clear inv
+        player.getSelf().getInventory().clear();
+
+        //Init white leather chestplate as shield.
         LeatherArmorMeta meta = (LeatherArmorMeta) chestPlate.getItemMeta();
         meta.setColor(Color.WHITE);
         meta.displayName(Component.text("Escudo"));
         chestPlate.setItemMeta(meta);
 
+        //Add the sword to the inv.
         ItemStack sword = CustomStack.getInstance("the_sword_of_the_storm").getItemStack();
         player.getSelf().getInventory().setItem(4, sword);
+
+        //Add the skill item to the inv.
+        ItemStack skill;
         if(player.hasSkill()){
-            player.getSelf().getInventory().setItemInOffHand(player.getCurrentSkill().getIcon());
+            skill = player.getCurrentSkill().getIcon();
+        }else {
+            skill = new ItemStack(Material.BARRIER);
+            ItemMeta barrierMeta = skill.getItemMeta();
+            barrierMeta.displayName(Component.text("Sin hablidad", NamedTextColor.RED));
         }
+        player.getSelf().getInventory().setItemInOffHand(skill);
     }
 
     public boolean isAlive() {
