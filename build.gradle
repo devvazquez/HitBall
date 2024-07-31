@@ -28,19 +28,16 @@ repositories {
 
 dependencies {
     //Paper
-    compileOnly "com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
     //PAPI
     compileOnly 'me.clip:placeholderapi:2.11.6'
-    //InvetivetalentDev libs...
-    implementation 'com.github.InventivetalentDev:GlowAPI:1.5.6-SNAPSHOT'
-    implementation 'org.inventivetalent.packetlistenerapi:api:3.9.11-SNAPSHOT'
     //ItemsAdder
     compileOnly 'com.github.LoneDev6:API-ItemsAdder:3.6.1'
     // MariaDB
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.7'
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion

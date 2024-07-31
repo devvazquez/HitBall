@@ -46,7 +46,9 @@ public final class HitBallPlugin extends JavaPlugin {
 
     /*
         TODO:
-         - Add chest gui to see available swords.
+            - Fix
+            - Fully support swords (cofig file? db?)
+            - Add chest gui to see available swords / skill
      */
 
     @Override

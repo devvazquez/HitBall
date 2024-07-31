@@ -24,7 +24,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.inventivetalent.glow.GlowAPI;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -91,7 +90,6 @@ public class PlayingState implements GameState {
         // Start the game
         this.running = true;
         ball.spawn();
-        GlowAPI.setGlowing(ball.getEntity(), GlowAPI.Color.RED, targeting.getSelf());
         updateVelocityTask.runTaskTimer(plugin, 0L, 0L);
     }
 
@@ -110,7 +108,7 @@ public class PlayingState implements GameState {
     private void endGame() {
         this.running = false;
 
-        GlowAPI.setGlowing(ball.getEntity(), null, targeting.getSelf());
+        //GlowAPI.setGlowing(ball.getEntity(), null, targeting.getSelf());
         ball.getEntity().remove();
 
         stateManager.getPlayers().forEach(player -> player.getProperties().reset());
@@ -138,8 +136,8 @@ public class PlayingState implements GameState {
                 plugin.getLogger().warning("Hubo un error seleccionando al proximo target.");
                 endGame();
             }
-            GlowAPI.setGlowing(ball.getEntity(), null, lastTargeting.getSelf());
-            GlowAPI.setGlowing(ball.getEntity(), GlowAPI.Color.RED, targeting.getSelf());
+            //GlowAPI.setGlowing(ball.getEntity(), null, lastTargeting.getSelf());
+            //GlowAPI.setGlowing(ball.getEntity(), GlowAPI.Color.RED, targeting.getSelf());
         }
     }
 

@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/BallBlade.main.iml" filepath="$PROJECT_DIR$/.idea/modules/BallBlade.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HitBall.BallBlade.main.iml" filepath="$PROJECT_DIR$/.idea/modules/HitBall.BallBlade.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/HitBall.main.iml" filepath="$PROJECT_DIR$/.idea/modules/HitBall.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dev.galacticmc.BallBlade.main.iml" filepath="$PROJECT_DIR$/.idea/modules/dev.galacticmc.BallBlade.main.iml" />
     </modules>
   </component>

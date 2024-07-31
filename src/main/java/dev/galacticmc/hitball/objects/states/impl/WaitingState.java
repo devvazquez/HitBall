@@ -94,12 +94,6 @@ public class WaitingState implements GameState {
         // No hacer nada porque no se procesa ninguna interacción con entidades.
     }
 
-    @Override
-    public void fallingBlockDie(EntityRemoveFromWorldEvent event) {
-        //Do nothing
-    }
-
-
 
     // - EVENTS END -
 }

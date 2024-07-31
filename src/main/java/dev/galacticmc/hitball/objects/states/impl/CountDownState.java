@@ -66,9 +66,4 @@ public class CountDownState implements GameState {
     public void playerInteract(PlayerInteractEvent event) {
 
     }
-
-    @Override
-    public void fallingBlockDie(EntityRemoveFromWorldEvent event) {
-
-    }
 }
