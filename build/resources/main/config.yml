@@ -5,7 +5,9 @@ database:
   database: ""
   user: ""
   password: ""
-
+#Items default
+default-skill-ia-item: ""
+default-sword-ia-item: ""
 #Configuracion de mundos
 worlds:
   example:

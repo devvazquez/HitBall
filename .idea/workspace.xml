@@ -5,51 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e703ff12-2198-44be-bee1-deeffdffac38" name="Changes" comment="Updated to Java 16 - Paper 1.17.1">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/HitBall.BallBlade.main.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/CoreCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/CoreCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/SubCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/SubCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/BallSpawnPosition.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/BallSpawnPosition.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/PlayerSpawnPosition.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/PlayerSpawnPosition.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/ReloadSubCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/ReloadSubCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/TeleportCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/commands/impl/TeleportCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/BallEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/ConfigManager.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/Database.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/HitBallExpansion.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/HitBallExpansion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/HitBallPlayer$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/HitBallPlayer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/LangKey.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/LangKey.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/LanguageManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/SpawnLocations.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/StatsKeeper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/WorldManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/PlayerSkills.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/Skill.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/Skill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/SkillManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/SkillManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/GameState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/StateManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/StateManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/runables/CountDownRunnable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/runables/WaitingForPlayersRunnable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/raytracing/AABB.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/raytracing/AABB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/raytracing/Ray.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/raytracing/Ray.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/util/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/util/Utils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/BallBlade-1.0-SNAPSHOT-all.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,23 +110,24 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.BallBlade [shadowJar].executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Coding/Plugins/BallBlade/src/main/java/dev/galacticmc/ballblade",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.language"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.BallBlade [shadowJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Coding/Plugins/BallBlade/src/main/java/dev/galacticmc/ballblade&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.language&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Coding\Plugins\BallBlade\src\main\java\dev\galacticmc\ballblade" />
@@ -279,6 +254,17 @@
     </task>
     <option name="localTasksCounter" value="5" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Imported on new pc" />

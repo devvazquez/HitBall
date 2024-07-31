@@ -3,6 +3,9 @@ package dev.galacticmc.hitball.objects;
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -10,7 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-public class Database {
+public class Database implements Listener {
 
     public final HitBallPlugin plugin;
     public final String host, database, username, password;
@@ -50,7 +53,17 @@ public class Database {
                 "Wins", "INTEGER",
                 "Losses", "INTEGER",
                 "GamesPlayed", "INTEGER"));
+        // Keep track of
+        createTable("EquipedItems", Utils.createMap(
+                "Uuid", "VARCHAR(36) PRIMARY KEY",
+                "SwordItem", "VARCHAR(36)"));
         plugin.getLogger().fine("Conectado a la base de datos!");
+    }
+
+    @EventHandler
+    public void playerJoin(PlayerJoinEvent e){
+        UUID playerUUID = e.getPlayer().getUniqueId();
+        //setEquipedItemsDefaults(playerUUID);
     }
 
     private java.sql.Connection openConnection() throws SQLException, ClassNotFoundException {
