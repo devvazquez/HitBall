@@ -1,6 +1,8 @@
 package dev.galacticmc.hitball.objects.states;
 
 import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.CustomEntity;
+import dev.lone.itemsadder.api.CustomFurniture;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;

@@ -52,8 +52,9 @@ public final class HitBallPlugin extends JavaPlugin {
 
     /*
         TODO:
-            - Either players arent being added to 'players' list or there is a bug in PlayingState, cant get any properties even after HitBallPlayer:joinGame()
-            - Fully support swords (cofig file? db?)
+            - Fix statistics
+            - Add cooldown + speed increment
+            - Fully support swords (cofig file? db?) - 50%
             - Add chest gui to see available swords / skill
             - Bounce player on playerInteract if on bounds (cause faster than task tick?)
      */

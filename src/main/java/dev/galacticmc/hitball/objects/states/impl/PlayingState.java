@@ -73,7 +73,7 @@ public class PlayingState implements GameState {
         BukkitRunnable updateVelocityTask = new BukkitRunnable() {
             @Override
             public void run() {
-                if (targeting.getSelf().isOnline() && running) {
+                if (running) {
                     // Get locations
                     Location ballLocation = ball.getLocation();
                     Location playerLocation = targeting.getSelf().getEyeLocation().add(0, -0.5, 0);
@@ -83,9 +83,8 @@ public class PlayingState implements GameState {
                     ball.setVelocity(direction); //Safe?
                     // Check player collisions
                     checkCollisions();
-                } else {
+                }else {
                     cancel();
-                    endGame();
                 }
             }
         };
@@ -114,7 +113,10 @@ public class PlayingState implements GameState {
         this.running = false;
 
         //GlowAPI.setGlowing(ball.getEntity(), null, targeting.getSelf());
-        ball.getEntity().remove();
+        //Thread-safe entity removal
+        plugin.getThreadSafeMethods().runSafeLambda(()->{
+            ball.getEntity().remove();
+        });
 
         stateManager.getPlayers().forEach(player -> {
             player.getProperties().reset();
@@ -265,6 +267,8 @@ public class PlayingState implements GameState {
         HitBallPlayer hitBallPlayer = plugin.getWorldManager().getHitBallPlayer(player);
         //Sword click
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
+            //If player interact in range within the ball just bounce it and don't wait for the next tick.
+            checkCollisions();
             ItemStack inMainHand = player.getInventory().getItemInMainHand();
             if(CustomStack.byItemStack(inMainHand) == null) return;
             if (!hitBallPlayer.getProperties().isShieldActive()) {
