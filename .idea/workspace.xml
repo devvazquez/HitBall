@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e703ff12-2198-44be-bee1-deeffdffac38" name="Changes" comment="Updated to Java 16 - Paper 1.17.1">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/ThreadSafeMethods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
+    <list default="true" id="e703ff12-2198-44be-bee1-deeffdffac38" name="Changes" comment="Added async ball task &amp; thread sage methods.">
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/Skill.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/skills/Skill.class" afterDir="false" />
@@ -24,18 +21,8 @@
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/WorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/WorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/Skill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/SkillManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/SkillManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/BallEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/BallEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/HitBallPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/HitBallPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/InGameProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/InGameProperties.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/StateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/StateManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722352040302</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added async ball task &amp; thread sage methods.">
+      <option name="closed" value="true" />
+      <created>1722610021854</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1722610021854</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,7 +280,8 @@
     <MESSAGE value="Added suppport for custom sword and skill item click detection." />
     <MESSAGE value="Added events to prevent payer from moving items around on 'PlayingState'" />
     <MESSAGE value="Updated to Java 16 - Paper 1.17.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated to Java 16 - Paper 1.17.1" />
+    <MESSAGE value="Added async ball task &amp; thread sage methods." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added async ball task &amp; thread sage methods." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

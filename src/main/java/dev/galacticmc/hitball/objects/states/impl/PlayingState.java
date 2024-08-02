@@ -240,19 +240,23 @@ public class PlayingState implements GameState {
     }
 
     private void spawnFirework(Player player) {
-        Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation().add(0, 5, 0), EntityType.FIREWORK);
-        FireworkMeta meta = firework.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder()
-                .with(FireworkEffect.Type.STAR)
-                .withColor(org.bukkit.Color.AQUA)
-                .withFade(org.bukkit.Color.YELLOW)
-                .withTrail()
-                .withFlicker()
-                .build();
-        meta.addEffect(effect);
-        meta.setPower(0);
-        firework.setFireworkMeta(meta);
-        Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 20L);
+        //Thread safe entity spawn
+        plugin.getThreadSafeMethods().runSafeLambda(()->{
+            Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation().add(0, 5, 0), EntityType.FIREWORK);
+            FireworkMeta meta = firework.getFireworkMeta();
+            FireworkEffect effect = FireworkEffect.builder()
+                    .with(FireworkEffect.Type.STAR)
+                    .withColor(org.bukkit.Color.AQUA)
+                    .withFade(org.bukkit.Color.YELLOW)
+                    .withTrail()
+                    .withFlicker()
+                    .build();
+            meta.addEffect(effect);
+            meta.setPower(0);
+            firework.setFireworkMeta(meta);
+            Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 19L);
+        });
+
     }
 
     @Override

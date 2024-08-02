@@ -82,6 +82,10 @@ public class InGameProperties {
         this.dead = false;
         devisualizeShield();
         disableFakeSpectatorMode();
+        removeItems();
+    }
+
+    public void removeItems(){
         player.getSelf().getInventory().setItemInOffHand(null);
         player.getSelf().getInventory().setItemInMainHand(null);
     }
@@ -145,10 +149,17 @@ public class InGameProperties {
 
     public void enableFakeSpectatorMode() {
 
+        player.getSelf().getInventory().setItemInMainHand(null);
+
         // Make player invisible
         //Thread safe sync task
         plugin.getThreadSafeMethods().runSafeLambda(()->{
             player.getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
+            // Hide the player from all other players
+            plugin.getWorldManager().getOnlinePlayers().forEach(p ->{
+                if(p.equals(player)) return;
+                p.getSelf().hidePlayer(plugin, player.getSelf());
+            });
         });
 
         // Allow flying and set fly speed
@@ -158,16 +169,20 @@ public class InGameProperties {
 
         // Disable damage
         player.getSelf().setInvulnerable(true);
-
-        // Hide the player from all other players
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.hidePlayer(plugin, player.getSelf());
-        }
     }
 
     public void disableFakeSpectatorMode() {
-        // Remove invisibility
-        player.getSelf().removePotionEffect(PotionEffectType.INVISIBILITY);
+
+        //Make player visible
+        //Thread safe sync task
+        plugin.getThreadSafeMethods().runSafeLambda(()->{
+            player.getSelf().removePotionEffect(PotionEffectType.INVISIBILITY);
+            // Hide the player from all other players
+            plugin.getWorldManager().getOnlinePlayers().forEach(p ->{
+                if(p.equals(player)) return;
+                p.getSelf().showPlayer(plugin, player.getSelf());
+            });
+        });
 
         // Disable flying
         player.getSelf().setAllowFlight(false);
@@ -175,11 +190,6 @@ public class InGameProperties {
 
         // Enable damage
         player.getSelf().setInvulnerable(false);
-
-        // Show the player to all other players
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.showPlayer(plugin, player.getSelf());
-        }
     }
 
 }
