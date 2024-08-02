@@ -2,11 +2,9 @@ package dev.galacticmc.hitball.objects.states;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
-import dev.galacticmc.hitball.objects.swords.Sword;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -17,10 +15,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Collections;
 
 public class InGameProperties {
 
@@ -61,7 +60,9 @@ public class InGameProperties {
         }else {
             skill = new ItemStack(Material.BARRIER);
             ItemMeta barrierMeta = skill.getItemMeta();
+            barrierMeta.lore(Collections.singletonList(Component.empty()));
             barrierMeta.displayName(Component.text("Sin hablidad", NamedTextColor.RED));
+            skill.setItemMeta(barrierMeta);
         }
         player.getSelf().getInventory().setItemInOffHand(skill);
     }
@@ -81,6 +82,8 @@ public class InGameProperties {
         this.dead = false;
         devisualizeShield();
         disableFakeSpectatorMode();
+        player.getSelf().getInventory().setItemInOffHand(null);
+        player.getSelf().getInventory().setItemInMainHand(null);
     }
 
     public boolean isShieldActive() {
@@ -141,8 +144,12 @@ public class InGameProperties {
     }
 
     public void enableFakeSpectatorMode() {
+
         // Make player invisible
-        player.getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
+        //Thread safe sync task
+        plugin.getThreadSafeMethods().runSafeLambda(()->{
+            player.getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
+        });
 
         // Allow flying and set fly speed
         player.getSelf().setAllowFlight(true);

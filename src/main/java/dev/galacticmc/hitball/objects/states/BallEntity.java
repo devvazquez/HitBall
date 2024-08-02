@@ -67,7 +67,6 @@ public class BallEntity{
     }
 
     private FallingBlock createInitialFallingBlock(Location loc){
-        CustomBlock.getInstance("sd").getBaseBlockData();
         return loc.getWorld().spawnFallingBlock(loc, Material.PACKED_ICE.createBlockData());
     }
 

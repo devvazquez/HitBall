@@ -7,6 +7,7 @@ import dev.galacticmc.hitball.commands.impl.BallSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.PlayerSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.ReloadSubCommand;
 import dev.galacticmc.hitball.commands.impl.TeleportCommand;
+import dev.galacticmc.hitball.objects.ThreadSafeMethods;
 import dev.galacticmc.hitball.objects.managers.ConfigManager;
 import dev.galacticmc.hitball.objects.Database;
 import dev.galacticmc.hitball.objects.HitBallExpansion;
@@ -44,11 +45,17 @@ public final class HitBallPlugin extends JavaPlugin {
         return languageManager;
     }
 
+    private ThreadSafeMethods threadSafeMethods;
+    public ThreadSafeMethods getThreadSafeMethods(){
+        return threadSafeMethods;
+    }
+
     /*
         TODO:
-            - Fix
+            - Either players arent being added to 'players' list or there is a bug in PlayingState, cant get any properties even after HitBallPlayer:joinGame()
             - Fully support swords (cofig file? db?)
             - Add chest gui to see available swords / skill
+            - Bounce player on playerInteract if on bounds (cause faster than task tick?)
      */
 
     @Override
@@ -60,6 +67,7 @@ public final class HitBallPlugin extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         this.worldManager = new WorldManager(this);
         this.languageManager = new LanguageManager(this);
+        this.threadSafeMethods = new ThreadSafeMethods(this);
 
         getServer().getPluginManager().registerEvents(worldManager, this);
 

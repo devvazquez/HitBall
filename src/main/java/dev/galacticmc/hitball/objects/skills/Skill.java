@@ -12,10 +12,6 @@ import java.util.UUID;
 public abstract class Skill{
 
     private HitBallPlugin plugin;
-    private StateManager stateManager;
-    public StateManager getStateManager() {
-        return stateManager;
-    }
 
     private ItemStack icon;
     public void setItemIcon(ItemStack m){
@@ -25,17 +21,16 @@ public abstract class Skill{
         return icon;
     }
 
-    public Skill(HitBallPlugin plugin, StateManager stateManager) {
+    public Skill(HitBallPlugin plugin) {
         this.plugin = plugin;
-        this.stateManager = stateManager;
     }
 
-    public abstract void perfomSkill(UUID self);
-    public abstract boolean checksForPlayer(UUID player);
+    public abstract void perfomSkill(UUID self, StateManager stateManager);
+    public abstract boolean checksForPlayer(UUID player, StateManager stateManager);
 
-    public void executeSkill(UUID player){
-        if(checksForPlayer(player)){
-            perfomSkill(player);
+    public void executeSkill(UUID player, StateManager stateManager){
+        if(checksForPlayer(player, stateManager)){
+            perfomSkill(player, stateManager);
         }
     }
 

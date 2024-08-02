@@ -18,11 +18,9 @@ import java.util.*;
 public class SkillManager implements Listener {
 
     private final HitBallPlugin plugin;
-    private final StateManager stateManager;
 
-    public SkillManager(HitBallPlugin hitBallPlugin, StateManager stateManager) {
+    public SkillManager(HitBallPlugin hitBallPlugin) {
         this.plugin = hitBallPlugin;
-        this.stateManager = stateManager;
     }
 
     public List<Skill> getSkillsForPlayer(Player player) {
@@ -33,7 +31,7 @@ public class SkillManager implements Listener {
             if (!name.startsWith("hitball.skill.")) continue;
             switch (name.substring(13)) { // Change to 13 to account for the length of "hitball."
                 case "revive":
-                    skills.add(new ReviveSkill(plugin, stateManager));
+                    skills.add(new ReviveSkill(plugin));
                     break;
                 // Add more cases here for other skills
             }

@@ -1,12 +1,12 @@
 package dev.galacticmc.hitball.objects.states.impl;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -57,9 +57,13 @@ public class CountDownState implements GameState {
     }
 
     @Override
-    public void playerMove(PlayerMoveEvent event) {
-        if(event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-        event.setCancelled(true);
+    public void playerMove(PlayerMoveEvent e) {
+        if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
+        Location f = e.getFrom();
+        Location t = e.getTo();
+        if(f.getX() != t.getX() || f.getY() != t.getY()){
+            e.setCancelled(true);
+        }
     }
 
     @Override

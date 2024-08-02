@@ -12,7 +12,6 @@ import dev.galacticmc.hitball.objects.states.GameState;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.FireworkEffect;
@@ -56,7 +55,6 @@ public class PlayingState implements GameState {
         this.world = stateManager.getMiniGameWorld();
         this.spawnLocations = stateManager.getSpawnLocations();
 
-        this.targeting = getRandomOnlinePlayer();
         this.ball = new BallEntity(spawnLocations.getSpawnBallLocation());
 
         this.SPEED = 0.15D;
@@ -64,6 +62,10 @@ public class PlayingState implements GameState {
         this.STEP = 0.06D;
         //this.targetGlow = Glow.builder().color(ChatColor.RED).name("ballglow").build();
         //targetGlow.display(targeting.getSelf());
+
+        //Set all player to be in-game
+        this.stateManager.getPlayers().forEach(HitBallPlayer::joinGame);
+        this.targeting = getRandomOnlinePlayer();
 
         // Get locations
         // Calculate velocity
@@ -78,7 +80,7 @@ public class PlayingState implements GameState {
                     // Calculate velocity
                     Vector direction = playerLocation.toVector().subtract(ballLocation.toVector()).normalize();
                     direction.multiply(SPEED);
-                    ball.setVelocity(direction);
+                    ball.setVelocity(direction); //Safe?
                     // Check player collisions
                     checkCollisions();
                 } else {
@@ -90,17 +92,20 @@ public class PlayingState implements GameState {
         // Start the game
         this.running = true;
         ball.spawn();
-        updateVelocityTask.runTaskTimer(plugin, 0L, 0L);
+        updateVelocityTask.runTaskTimerAsynchronously(plugin, 0L, 0L);
     }
 
     private HitBallPlayer getRandomOnlinePlayer() {
-        List<HitBallPlayer> alive = stateManager.getPlayers().stream().filter(player -> player.getProperties().isAlive()).collect(Collectors.toList());
+        List<HitBallPlayer> alive = stateManager.getPlayersFiltered(
+                player -> player.getProperties().isAlive());
         int randomIndex = Utils.random.nextInt(alive.size());
         return alive.get(randomIndex);
     }
 
     private HitBallPlayer getRandomOnlinePlayer(HitBallPlayer notToBe) {
-        List<HitBallPlayer> alive = stateManager.getPlayers().stream().filter(player -> player.getProperties().isAlive() && !player.equals(notToBe)).collect(Collectors.toList());
+        List<HitBallPlayer> alive = stateManager.getPlayersFiltered(player ->
+                player.getProperties().isAlive()
+                && !player.equals(notToBe));
         int randomIndex = Utils.random.nextInt(alive.size());
         return alive.get(randomIndex);
     }
@@ -111,12 +116,15 @@ public class PlayingState implements GameState {
         //GlowAPI.setGlowing(ball.getEntity(), null, targeting.getSelf());
         ball.getEntity().remove();
 
-        stateManager.getPlayers().forEach(player -> player.getProperties().reset());
+        stateManager.getPlayers().forEach(player -> {
+            player.getProperties().reset();
+            player.leaveGame();
+        });
 
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            world.getPlayers().forEach(player -> {
-                player.sendMessage(LangKey.SPAWN_TP.formatted());
-                player.performCommand("spawn");
+            stateManager.getPlayers().forEach(player -> {
+                player.getSelf().sendMessage(LangKey.SPAWN_TP.formatted());
+                player.getSelf().performCommand("spawn");
             });
 
             stateManager.nextGameState(new WaitingState());
@@ -158,9 +166,9 @@ public class PlayingState implements GameState {
         killedPlayerHB.getProperties().kill();
 
         Player killedPlayer = targeting.getSelf();
-        boolean lastPlayer = stateManager.getPlayers().stream()
-                .filter(player -> player.getProperties().isAlive())
-                .count() == 1;
+        boolean lastPlayer = stateManager.getPlayersFiltered(
+                player -> player.getProperties().isAlive())
+                .size() == 1;
 
         if (killerPlayerHB != null) {
             Player killerPlayer = lastTargeting.getSelf();
@@ -213,8 +221,8 @@ public class PlayingState implements GameState {
     private void announceWinner(Player player) {
         //Añadir la win y loss a la base de datos
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            world.getPlayers().forEach(p -> {
-                if (p == player) {
+            stateManager.getPlayers().forEach(p -> {
+                if (p.getSelf() == player) {
                     plugin.getDatabase().addWins(player.getUniqueId(), 1);
                 }else {
                     plugin.getDatabase().addLosses(player.getUniqueId(), 1);
@@ -250,7 +258,7 @@ public class PlayingState implements GameState {
     @Override
     public void playerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        HitBallPlayer hitBallPlayer = stateManager.getHitBallPlayer(player);
+        HitBallPlayer hitBallPlayer = plugin.getWorldManager().getHitBallPlayer(player);
         //Sword click
         if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK){
             ItemStack inMainHand = player.getInventory().getItemInMainHand();
@@ -263,7 +271,7 @@ public class PlayingState implements GameState {
         else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             if(!hitBallPlayer.hasSkill()) return;
             if(!player.getInventory().getItemInOffHand().equals(hitBallPlayer.getCurrentSkill().getIcon())) return;
-            hitBallPlayer.getCurrentSkill().executeSkill(player.getUniqueId());
+            hitBallPlayer.getCurrentSkill().executeSkill(player.getUniqueId(), stateManager);
         }
 
     }
@@ -271,7 +279,7 @@ public class PlayingState implements GameState {
 
     @Override
     public void playerJoin(Player player) {
-        player.performCommand("/spawn");
+        player.performCommand("spawn");
         player.sendMessage(LangKey.GAME_FULL.formatted());
     }
 
@@ -286,18 +294,10 @@ public class PlayingState implements GameState {
                     .findFirst().get();
             spawnLocations.getPlayersSpawns().replace(key, null);
         }
-        // Leave message
-        if (running) {
-            world.sendMessage(LangKey.PLAYER_LEAVE.formatted("player_name", player.getName()));
-            if (world.getPlayers().size() <= 1) {
-                world.sendMessage(LangKey.PLAYER_LEAVE_STOP.formatted("player_name", player.getName()));
-                endGame();
-            }
-        } else {
-            player.setInvisible(false);
-        }
-        if (player.equals(targeting)) {
-            switchPlayer();
+        if(running){
+            // Stop game leave message
+            world.sendMessage(LangKey.PLAYER_LEAVE_STOP.formatted("player_name", player.getName()));
+            endGame();
         }
     }
 
@@ -324,7 +324,7 @@ public class PlayingState implements GameState {
     }
 
     public void revivePlayer(Player player){
-        HitBallPlayer hitBallPlayer = stateManager.getHitBallPlayer(player);
+        HitBallPlayer hitBallPlayer = plugin.getWorldManager().getHitBallPlayer(player);
         hitBallPlayer.getProperties().reset();
         //player.teleport(stateManager.getSpawnLocations().getPlayersSpawns());
         switchPlayer();

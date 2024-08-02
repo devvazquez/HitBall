@@ -17,24 +17,24 @@ import java.util.UUID;
 
 public class ReviveSkill extends Skill {
 
-    public ReviveSkill(HitBallPlugin plugin, StateManager stateManager) {
-        super(plugin, stateManager);
+    public ReviveSkill(HitBallPlugin plugin) {
+        super(plugin);
         ItemStack icon = new ItemStack(Material.YELLOW_BED);
         icon.lore(Collections.singletonList(Component.text(ChatColor.GOLD + "Revivir")));
         setItemIcon(icon);
     }
 
     @Override
-    public void perfomSkill(UUID self) {
-        PlayingState state = (PlayingState)getStateManager().getCurrentGameState();
+    public void perfomSkill(UUID self, StateManager stateManager) {
+        PlayingState state = (PlayingState)stateManager.getCurrentGameState();
     }
 
     @Override
-    public boolean checksForPlayer(UUID uuid) {
+    public boolean checksForPlayer(UUID uuid, StateManager stateManager) {
         Player player = Bukkit.getPlayer(uuid);
         if(player != null){
             if( player.isInvisible()
-                && getStateManager().getCurrentGameState() instanceof PlayingState){
+                && stateManager.getCurrentGameState() instanceof PlayingState){
                 return true;
             }else {
                 player.sendMessage(LangKey.REVIVE_CANT_USE.formatted());

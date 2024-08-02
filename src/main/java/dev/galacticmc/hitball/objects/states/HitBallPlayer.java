@@ -36,7 +36,7 @@ public class HitBallPlayer {
         return properties;
     }
 
-    private boolean inGame = false;
+    public boolean inGame = false;
 
     public HitBallPlayer(HitBallPlugin plugin, UUID self, List<Skill> skills) {
         this.plugin = plugin;

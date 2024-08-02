@@ -86,7 +86,11 @@ public class WaitingState implements GameState {
     @Override
     public void playerMove(PlayerMoveEvent e) {
         if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
-        e.setCancelled(true);
+        Location f = e.getFrom();
+        Location t = e.getTo();
+        if(f.getX() != t.getX() || f.getY() != t.getY()){
+            e.setCancelled(true);
+        }
     }
 
     @Override

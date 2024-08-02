@@ -1,9 +1,8 @@
 package dev.galacticmc.hitball.objects.states;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
+import com.google.common.collect.Lists;
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.skills.SkillManager;
 import dev.galacticmc.hitball.objects.states.impl.WaitingState;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -18,11 +17,21 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class StateManager implements Listener {
 
     private final HitBallPlugin plugin;
+    public ArrayList<HitBallPlayer> getPlayers(){
+        return new ArrayList<>(plugin.getThreadSafeMethods().getPlayersInWorld(miniGameWorld));
+    }
+    public  ArrayList<HitBallPlayer> getPlayersFiltered(Predicate<HitBallPlayer> filter){
+        return getPlayers().stream()
+                .filter(filter)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
     private GameState currentGameState;
     public GameState getCurrentGameState() {
@@ -38,11 +47,6 @@ public class StateManager implements Listener {
     public SpawnLocations getSpawnLocations() {
         return spawnLocations;
     }
-
-    private final SkillManager skillManager;
-
-    private final ArrayList<HitBallPlayer> players;
-    public ArrayList<HitBallPlayer> getPlayers() { return players; }
 
     private final int minPlayers;
     public int getMinPlayers() {
@@ -60,8 +64,6 @@ public class StateManager implements Listener {
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.spawnLocations = spawnLocations;
-        this.skillManager = new SkillManager(plugin, this);
-        this.players = new ArrayList<>();
     }
 
     public void start(){
@@ -85,15 +87,6 @@ public class StateManager implements Listener {
         }
     }
 
-    public HitBallPlayer getHitBallPlayer(Player player) {
-        Optional<HitBallPlayer> hitPlayer = players.stream().filter(hitBallPlayer -> hitBallPlayer.getSelf() == player).findFirst();
-        if(hitPlayer.isPresent()){
-            return hitPlayer.get();
-        }else{
-            throw new RuntimeException("No se pudo encotrar el jugador en la lista.");
-        }
-    }
-
     //EVENTS
 
     @EventHandler //No se puede romper bloques si no se esta en creativo
@@ -112,33 +105,14 @@ public class StateManager implements Listener {
         }
     }
 
-    @EventHandler
-    public void playerJoin(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        if(players.stream().noneMatch(hitBallPlayer -> hitBallPlayer.getSelf() == player)){
-            HitBallPlayer newPlayer = new HitBallPlayer(plugin, player.getUniqueId(), skillManager.getSkillsForPlayer(player));
-            players.add(newPlayer);
-        }
-    }
-
-    @EventHandler
-    public void playerLeave(PlayerQuitEvent event){
-        Player player = event.getPlayer();
-        if(players.stream().anyMatch(hitBallPlayer -> hitBallPlayer.getSelf() == player)){
-            players.remove(getHitBallPlayer(player));
-        }
-    }
-
     // - EVENT HOOKS -
 
     @EventHandler // playerJoin y playerLeave en GameState.java
     public void playerChangeWorld(PlayerChangedWorldEvent event){
         Player player = event.getPlayer();
-        if(event.getPlayer().getWorld() == miniGameWorld){
-            getHitBallPlayer(player).joinGame();
-            currentGameState.playerJoin(event.getPlayer());
-        } else if (event.getFrom() == miniGameWorld) {
-            getHitBallPlayer(player).leaveGame();
+        if(player.getWorld() == miniGameWorld){
+            currentGameState.playerJoin(player);
+        } else if (player == miniGameWorld) {
             currentGameState.playerLeave(event.getPlayer());
         }
     }
