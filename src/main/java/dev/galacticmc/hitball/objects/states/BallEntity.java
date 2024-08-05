@@ -1,5 +1,6 @@
 package dev.galacticmc.hitball.objects.states;
 
+import dev.galacticmc.hitball.HitBallPlugin;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomEntity;
 import dev.lone.itemsadder.api.CustomFurniture;
@@ -10,12 +11,15 @@ import org.bukkit.util.Vector;
 
 public class BallEntity{
 
+    private final Location initialLocation;
+    private final HitBallPlugin plugin;
+
     private Vector velocity;
     private FallingBlock entity;
-    private final Location initialLocation;
 
-    public BallEntity(Location initialLocation){
+    public BallEntity(Location initialLocation, HitBallPlugin plugin){
         this.initialLocation = initialLocation;
+        this.plugin = plugin;
         setVelocity(new Vector());
     }
 
@@ -27,13 +31,15 @@ public class BallEntity{
             entity.remove();
             location = getLocation();
         }
-        setEntity(createInitialFallingBlock(location));
-        entity.setGravity(false);
-        entity.setDropItem(false);
-        entity.setCustomName("Ball");
-        entity.setInvulnerable(true);
-        setLocation(getLocation());
-        setVelocity(getVelocity());
+        plugin.getThreadSafeMethods().runSafeLambda(()->{
+            setEntity(createInitialFallingBlock(location));
+            entity.setGravity(false);
+            entity.setDropItem(false);
+            entity.setCustomName("Ball");
+            entity.setInvulnerable(true);
+            setLocation(getLocation());
+            setVelocity(getVelocity());
+        });
     }
 
     public void setVelocity(Vector velocity) {

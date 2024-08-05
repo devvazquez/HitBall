@@ -55,13 +55,11 @@ public class PlayingState implements GameState {
         this.world = stateManager.getMiniGameWorld();
         this.spawnLocations = stateManager.getSpawnLocations();
 
-        this.ball = new BallEntity(spawnLocations.getSpawnBallLocation());
+        this.ball = new BallEntity(spawnLocations.getSpawnBallLocation(), plugin);
 
         this.SPEED = 0.15D;
-        this.MAX_SPEED = 1D;
+        this.MAX_SPEED = 1.5D;
         this.STEP = 0.06D;
-        //this.targetGlow = Glow.builder().color(ChatColor.RED).name("ballglow").build();
-        //targetGlow.display(targeting.getSelf());
 
         //Set all player to be in-game
         this.stateManager.getPlayers().forEach(HitBallPlayer::joinGame);
@@ -90,7 +88,15 @@ public class PlayingState implements GameState {
         };
         // Start the game
         this.running = true;
+        //Spawn the ball
         ball.spawn();
+        try {
+            //Set glowing the entity only for targeting.
+            plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.AQUA);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+        //Run the main task.
         updateVelocityTask.runTaskTimerAsynchronously(plugin, 0L, 0L);
     }
 
@@ -112,7 +118,14 @@ public class PlayingState implements GameState {
     private void endGame() {
         this.running = false;
 
-        //GlowAPI.setGlowing(ball.getEntity(), null, targeting.getSelf());
+        if(ball != null && targeting != null){
+            try {
+                plugin.getGlowingEntities().unsetGlowing(ball.getEntity(), targeting.getSelf());
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         //Thread-safe entity removal
         plugin.getThreadSafeMethods().runSafeLambda(()->{
             ball.getEntity().remove();
@@ -146,8 +159,13 @@ public class PlayingState implements GameState {
                 plugin.getLogger().warning("Hubo un error seleccionando al proximo target.");
                 endGame();
             }
-            //GlowAPI.setGlowing(ball.getEntity(), null, lastTargeting.getSelf());
-            //GlowAPI.setGlowing(ball.getEntity(), GlowAPI.Color.RED, targeting.getSelf());
+            //Change the glow...
+            try {
+                plugin.getGlowingEntities().unsetGlowing(ball.getEntity(), lastTargeting.getSelf());
+                plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.AQUA);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

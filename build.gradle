@@ -28,13 +28,15 @@ repositories {
 
 dependencies {
     //Paper
-    compileOnly "io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT"
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     //PAPI
     compileOnly 'me.clip:placeholderapi:2.11.6'
     //ItemsAdder
     compileOnly 'com.github.LoneDev6:API-ItemsAdder:3.6.1'
     // MariaDB
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.7'
+    //GlowAPI
+    implementation 'io.netty:netty-all:4.1.68.Final'
 }
 
 def targetJavaVersion = 16

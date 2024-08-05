@@ -7,6 +7,7 @@ import dev.galacticmc.hitball.commands.impl.BallSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.PlayerSpawnPosition;
 import dev.galacticmc.hitball.commands.impl.ReloadSubCommand;
 import dev.galacticmc.hitball.commands.impl.TeleportCommand;
+import dev.galacticmc.hitball.objects.GlowingEntities;
 import dev.galacticmc.hitball.objects.ThreadSafeMethods;
 import dev.galacticmc.hitball.objects.managers.ConfigManager;
 import dev.galacticmc.hitball.objects.Database;
@@ -50,13 +51,16 @@ public final class HitBallPlugin extends JavaPlugin {
         return threadSafeMethods;
     }
 
+    private GlowingEntities glowingEntities;
+    public GlowingEntities getGlowingEntities() {
+        return glowingEntities;
+    }
     /*
         TODO:
             - Fix statistics
             - Add cooldown + speed increment
             - Fully support swords (cofig file? db?) - 50%
             - Add chest gui to see available swords / skill
-            - Bounce player on playerInteract if on bounds (cause faster than task tick?)
      */
 
     @Override
@@ -67,13 +71,12 @@ public final class HitBallPlugin extends JavaPlugin {
         // Initialize managers
         this.configManager = new ConfigManager(this);
         this.worldManager = new WorldManager(this);
-        this.languageManager = new LanguageManager(this);
-        this.threadSafeMethods = new ThreadSafeMethods(this);
-
         getServer().getPluginManager().registerEvents(worldManager, this);
-
         // Initialize the database
         this.database = new Database(this);
+        this.languageManager = new LanguageManager(this);
+        this.threadSafeMethods = new ThreadSafeMethods(this);
+        this.glowingEntities = new GlowingEntities(this);
 
         // Add commands
         try {
@@ -102,7 +105,7 @@ public final class HitBallPlugin extends JavaPlugin {
     }
 
     @SafeVarargs
-    private final void addCommand(Class<? extends SubCommand>... subcommands) throws NoSuchFieldException, IllegalAccessException {
+    private void addCommand(Class<? extends SubCommand>... subcommands) throws NoSuchFieldException, IllegalAccessException {
         ArrayList<SubCommand> commands = new ArrayList<>(); // Reusing var
         Arrays.stream(subcommands).map(subcommand -> { // Initialize subcommands passing this plugin as an arg.
             try {
@@ -132,6 +135,7 @@ public final class HitBallPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        glowingEntities.disable();
     }
 
 }
