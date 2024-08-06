@@ -3,12 +3,10 @@ package dev.galacticmc.hitball;
 import com.google.common.collect.Lists;
 import dev.galacticmc.hitball.commands.CoreCommand;
 import dev.galacticmc.hitball.commands.SubCommand;
-import dev.galacticmc.hitball.commands.impl.BallSpawnPosition;
-import dev.galacticmc.hitball.commands.impl.PlayerSpawnPosition;
-import dev.galacticmc.hitball.commands.impl.ReloadSubCommand;
-import dev.galacticmc.hitball.commands.impl.TeleportCommand;
+import dev.galacticmc.hitball.commands.impl.*;
 import dev.galacticmc.hitball.objects.GlowingEntities;
 import dev.galacticmc.hitball.objects.ThreadSafeMethods;
+import dev.galacticmc.hitball.objects.gui.GuiProvider;
 import dev.galacticmc.hitball.objects.managers.ConfigManager;
 import dev.galacticmc.hitball.objects.Database;
 import dev.galacticmc.hitball.objects.HitBallExpansion;
@@ -17,6 +15,7 @@ import dev.galacticmc.hitball.objects.managers.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.xenondevs.invui.gui.structure.Markers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -52,6 +51,12 @@ public final class HitBallPlugin extends JavaPlugin {
     public GlowingEntities getGlowingEntities() {
         return glowingEntities;
     }
+
+    private GuiProvider guiProvider;
+    public GuiProvider getGuiProvider(){
+        return guiProvider;
+    }
+
     /*
         TODO:
             - Fix statistics
@@ -74,10 +79,11 @@ public final class HitBallPlugin extends JavaPlugin {
         this.languageManager = new LanguageManager(this);
         this.threadSafeMethods = new ThreadSafeMethods(this);
         this.glowingEntities = new GlowingEntities(this);
+        this.guiProvider = new GuiProvider(this);
 
         // Add commands
         try {
-            addCommand(BallSpawnPosition.class, PlayerSpawnPosition.class, ReloadSubCommand.class, TeleportCommand.class);
+            addCommand(BallSpawnPosition.class, PlayerSpawnPosition.class, ReloadSubCommand.class, TeleportCommand.class, SwordsCommand.class);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }

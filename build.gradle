@@ -9,19 +9,23 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
     maven {
-        name = "jitpack"
+        name = 'jitpack'
         url = 'https://jitpack.io'
     }
     maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
     }
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        url = 'https://repo.xenondevs.xyz/releases'
+        url = 'https://repo.xenondevs.xyz/releases'
     }
 }
 
@@ -37,6 +41,9 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.7'
     //GlowAPI
     implementation 'io.netty:netty-all:4.1.68.Final'
+    //Inventory
+    implementation "xyz.xenondevs.invui:invui:1.33"
+
 }
 
 def targetJavaVersion = 16

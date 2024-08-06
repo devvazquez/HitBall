@@ -10,6 +10,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 
@@ -18,7 +19,6 @@ public class ReviveSkill extends Skill {
     public ReviveSkill(HitBallPlugin plugin) {
         super(plugin);
         ItemStack icon = new ItemStack(Material.YELLOW_BED);
-        icon.lore(Collections.singletonList(Component.text(ChatColor.GOLD + "Revivir")));
         setItemIcon(icon);
     }
 

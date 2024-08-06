@@ -27,14 +27,21 @@ public class BallEntity{
         setVelocity(new Vector());
     }
 
-    public void spawn(){
+    public void spawn(boolean revive){
         Location location;
-        if(entity == null){
+        boolean runCallback;
+        if(revive){
+            runCallback = false;
             location = initialLocation;
+        }else if(entity == null){
+            location = initialLocation;
+            runCallback = true;
         }else {
-            entity.remove();
+            runCallback = false;
+            //Set the location so that it is never null.
             location = getLocation();
         }
+
         plugin.getThreadSafeMethods().runSafeLambda(() -> {
             setEntity(createInitialFallingBlock(location));
             entity.setGravity(false);
@@ -43,6 +50,7 @@ public class BallEntity{
             entity.setInvulnerable(true);
             setLocation(getLocation());
             setVelocity(getVelocity());
+            if(!runCallback) return;
             this.callBack.run();
         });
     }

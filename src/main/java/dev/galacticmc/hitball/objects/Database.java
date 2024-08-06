@@ -4,20 +4,18 @@ import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
 
 public class Database implements Listener {
 
-    public final HitBallPlugin plugin;
-    public final String host, database, username, password;
-    public final int port;
+    private final HitBallPlugin plugin;
+    private final String host, database, username, password;
+    private final int port;
 
     public Database(HitBallPlugin plugin) {
         this.plugin = plugin;
@@ -33,6 +31,7 @@ public class Database implements Listener {
         if (this.port == 0) {
             throw new IllegalArgumentException("Database port is not configured");
         }
+
         this.database = database.getString("database");
         if (this.database == null) {
             throw new IllegalArgumentException("Database name is not configured");
@@ -54,16 +53,37 @@ public class Database implements Listener {
                 "Losses", "INTEGER",
                 "GamesPlayed", "INTEGER"));
         // Keep track of
-        createTable("EquipedItems", Utils.createMap(
+        createTable("EquipedItem", Utils.createMap(
                 "Uuid", "VARCHAR(36) PRIMARY KEY",
                 "SwordItem", "VARCHAR(36)"));
+        // Create player swords table
+        createTable("PlayerSwords", Utils.createMap(
+                "Uuid", "VARCHAR(36) PRIMARY KEY",
+                "Swords", "JSON"));
         plugin.getLogger().fine("Conectado a la base de datos!");
     }
 
-    @EventHandler
-    public void playerJoin(PlayerJoinEvent e){
+    @EventHandler(priority = EventPriority.HIGH)
+    public void playerJoin(PlayerJoinEvent e) {
         UUID playerUUID = e.getPlayer().getUniqueId();
-        //setEquipedItemsDefaults(playerUUID);
+        setEquipedItemsDefaults(playerUUID);
+    }
+
+    private void setEquipedItemsDefaults(UUID playerUUID) {
+        //Default items adder item namespace.
+        String defaultSword = plugin.getConfig().getString("default-sword-ia-item", "ork_sword");
+        try (Connection con = openConnection()) {
+            String query = "INSERT INTO EquipedItems (Uuid, SwordItem) VALUES (?, ?) " +
+                    "ON DUPLICATE KEY UPDATE SwordItem = IFNULL(SwordItem, ?)";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, defaultSword);
+            stmt.setString(3, defaultSword);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private java.sql.Connection openConnection() throws SQLException, ClassNotFoundException {
@@ -155,6 +175,77 @@ public class Database implements Listener {
         }
         return null;
     }
+
+    public void addPlayerSword(UUID playerUUID, String sword) {
+        try (Connection con = openConnection()) {
+            String query = "INSERT INTO PlayerSwords (id, swords) VALUES (?, JSON_ARRAY(?)) " +
+                    "ON DUPLICATE KEY UPDATE swords = JSON_ARRAY_APPEND(swords, '$', ?)";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, sword);
+            stmt.setString(3, sword);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setEquippedItem(UUID playerUUID, String swordItem) {
+        try (Connection con = openConnection()) {
+            String query = "INSERT INTO EquipedItems (Uuid, SwordItem) VALUES (?, ?) " +
+                    "ON DUPLICATE KEY UPDATE SwordItem = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, playerUUID.toString());
+            stmt.setString(2, swordItem);
+            stmt.setString(3, swordItem);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getEquippedItem(UUID playerUUID) {
+        String equippedItem = null;
+        try (Connection con = openConnection()) {
+            String query = "SELECT SwordItem FROM EquipedItems WHERE Uuid = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, playerUUID.toString());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                equippedItem = rs.getString("SwordItem");
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return equippedItem;
+    }
+
+
+    public List<String> getPlayerSwords(UUID playerUUID) {
+        List<String> swords = new ArrayList<>();
+        try (Connection con = openConnection()) {
+            String query = "SELECT swords FROM PlayerSwords WHERE id = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, playerUUID.toString());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Array swordsArray = rs.getArray("swords");
+                if (swordsArray != null) {
+                    swords = Arrays.asList((String[]) swordsArray.getArray());
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return swords;
+    }
+
 
     // Getters
     public int getKills(UUID playerUUID) {

@@ -105,7 +105,7 @@ public class PlayingState implements GameState {
         });
 
         //Spawn the ball
-        ball.spawn();
+        ball.spawn(false);
     }
 
     private HitBallPlayer getRandomOnlinePlayer() {
@@ -219,7 +219,7 @@ public class PlayingState implements GameState {
         if (!lastPlayer) {
             switchPlayer();
             this.SPEED = 0.15D;
-            ball.spawn();
+            ball.spawn(true);
         } else {
             endGame();
         }
@@ -337,7 +337,7 @@ public class PlayingState implements GameState {
     @EventHandler
     public void fallingBlockDie(EntityRemoveFromWorldEvent event) {
         if (event.getEntity() == ball.getEntity() && running) {
-            ball.spawn();
+            ball.spawn(false);
         }
     }
 
@@ -356,7 +356,7 @@ public class PlayingState implements GameState {
         //player.teleport(stateManager.getSpawnLocations().getPlayersSpawns());
         switchPlayer();
         this.SPEED = 0.15D;
-        ball.spawn();
+        ball.spawn(true);
     }
 
 }

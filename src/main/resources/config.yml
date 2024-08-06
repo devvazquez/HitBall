@@ -6,8 +6,7 @@ database:
   user: ""
   password: ""
 #Items default
-default-skill-ia-item: ""
-default-sword-ia-item: ""
+default-sword-ia-item: "ork_sword"
 #Configuracion de mundos
 worlds:
   example:

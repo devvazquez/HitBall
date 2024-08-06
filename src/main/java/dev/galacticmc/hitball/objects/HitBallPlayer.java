@@ -13,16 +13,25 @@ public class HitBallPlayer {
 
     private final HitBallPlugin plugin;
     private final UUID self;
+
     private final List<Skill> skills;
-    private final Skill selectedSkill;
+    private Skill selectedSkill;
     public boolean hasSkill(){
         return selectedSkill != null;
     }
     public Skill getCurrentSkill(){
         return selectedSkill;
     }
-    private InGameProperties properties;
 
+    private String selectedSword;
+    public String getSelectedSword(){
+        return selectedSword;
+    }
+    public void setSelectedSword(String swordNameSpace){
+        this.selectedSword = swordNameSpace;
+    }
+
+    private InGameProperties properties;
     public InGameProperties getProperties() {
         return properties;
     }
@@ -34,6 +43,7 @@ public class HitBallPlayer {
         this.self = self;
         this.skills = skills;
         this.selectedSkill = skills.stream().findFirst().orElse(null);
+        this.selectedSword = plugin.getDatabase().getEquippedItem(self);
     }
 
     public Player getSelf() {
