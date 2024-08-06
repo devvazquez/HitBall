@@ -2,7 +2,7 @@ package dev.galacticmc.hitball.objects.managers;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.skills.SkillManager;
-import dev.galacticmc.hitball.objects.states.HitBallPlayer;
+import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import org.bukkit.*;
@@ -77,8 +77,8 @@ public class WorldManager implements Listener {
             }
 
             // Verificar si minPlayers es mayor que la cantidad de ubicaciones disponibles
-            if (minPlayers > spawnLocations.getPlayersSpawns().size()) {
-                plugin.getLogger().severe(String.format("La cantidad mínima de jugadores (%d) en el mundo %s es mayor que la cantidad de ubicaciones de spawn disponibles (%d).", minPlayers, worldName, spawnLocations.getPlayersSpawns().size()));
+            if (minPlayers > spawnLocations.playersSpawns().size()) {
+                plugin.getLogger().severe(String.format("La cantidad mínima de jugadores (%d) en el mundo %s es mayor que la cantidad de ubicaciones de spawn disponibles (%d).", minPlayers, worldName, spawnLocations.playersSpawns().size()));
                 return;
             }
 

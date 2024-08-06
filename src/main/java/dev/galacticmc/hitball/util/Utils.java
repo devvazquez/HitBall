@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 
 public class Utils {
 
-    public static final Random random = new Random();
+    //I don't like this approach but when using ConcurrentHashMap, values can't be null.
+    public static final UUID DUMMY_UUID = UUID.randomUUID();
+
+    public static final Random RANDOM = new Random();
+
     // Mapping of Spigot ChatColor to appropriate Java Color
     public static final Map<ChatColor, java.awt.Color> COLOR_MAPPINGS;
-
     static {
-
         // https://minecraft.gamepedia.com/Formatting_codes#Color_codes
         COLOR_MAPPINGS = ImmutableMap.<ChatColor, java.awt.Color>builder()
                 .put(ChatColor.BLACK, new java.awt.Color(0, 0, 0))
@@ -74,7 +76,7 @@ public class Utils {
             return null; // No players are online
         }
 
-        int randomIndex = random.nextInt(onlinePlayers.size());
+        int randomIndex = RANDOM.nextInt(onlinePlayers.size());
         return onlinePlayers.get(randomIndex);
     }
 

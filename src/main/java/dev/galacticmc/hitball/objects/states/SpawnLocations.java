@@ -2,24 +2,12 @@ package dev.galacticmc.hitball.objects.states;
 
 import org.bukkit.Location;
 
-import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SpawnLocations {
-
-    private final Location spawnBallLocation;
-    private final HashMap<Location, UUID> playersSpawns;
-
-    public Location getSpawnBallLocation() {
-        return spawnBallLocation;
-    }
-    public HashMap<Location, UUID> getPlayersSpawns() {
-        return playersSpawns;
-    }
-
-    public SpawnLocations(Location spawnBallLocation, HashMap<Location, UUID> playersSpawns) {
-        this.spawnBallLocation = spawnBallLocation;
-        this.playersSpawns = playersSpawns;
-    }
+/**
+ * @param playersSpawns Thread safe hashmap.
+ */
+public record SpawnLocations(Location spawnBallLocation, ConcurrentHashMap<Location, UUID> playersSpawns) {
 
 }

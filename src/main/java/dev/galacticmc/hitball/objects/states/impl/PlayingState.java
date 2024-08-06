@@ -2,7 +2,7 @@ package dev.galacticmc.hitball.objects.states.impl;
 
 import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.states.HitBallPlayer;
+import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import dev.galacticmc.hitball.util.Utils;
@@ -25,7 +25,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class PlayingState implements GameState {
 
@@ -55,7 +54,7 @@ public class PlayingState implements GameState {
         this.world = stateManager.getMiniGameWorld();
         this.spawnLocations = stateManager.getSpawnLocations();
 
-        this.ball = new BallEntity(spawnLocations.getSpawnBallLocation(), plugin);
+        this.ball = new BallEntity(spawnLocations.spawnBallLocation(), plugin);
 
         this.SPEED = 0.15D;
         this.MAX_SPEED = 1.5D;
@@ -88,22 +87,32 @@ public class PlayingState implements GameState {
         };
         // Start the game
         this.running = true;
+
+        //Run this code when the entity spawns.
+        /*  If done just after BallEntity::spawn() line, it would be executed
+         *  before since spawn() is executed safely using ThreadSafeMethods::runSafeLambda()
+         *  which is executed in the next tick.
+         */
+        ball.whenAlive(() -> {
+            //Set glowing the entity only for targeting.
+            try {
+                plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.AQUA);
+            } catch (ReflectiveOperationException e) {
+                throw new RuntimeException(e);
+            }
+            //Run the main task.
+            updateVelocityTask.runTaskTimerAsynchronously(plugin, 0L, 0L);
+        });
+
         //Spawn the ball
         ball.spawn();
-        try {
-            //Set glowing the entity only for targeting.
-            plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.AQUA);
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
-        //Run the main task.
-        updateVelocityTask.runTaskTimerAsynchronously(plugin, 0L, 0L);
     }
 
     private HitBallPlayer getRandomOnlinePlayer() {
         List<HitBallPlayer> alive = stateManager.getPlayersFiltered(
                 player -> player.getProperties().isAlive());
-        int randomIndex = Utils.random.nextInt(alive.size());
+        plugin.getLogger().info("Obtained alive player list: " + alive.toString());
+        int randomIndex = Utils.RANDOM.nextInt(alive.size());
         return alive.get(randomIndex);
     }
 
@@ -111,7 +120,7 @@ public class PlayingState implements GameState {
         List<HitBallPlayer> alive = stateManager.getPlayersFiltered(player ->
                 player.getProperties().isAlive()
                 && !player.equals(notToBe));
-        int randomIndex = Utils.random.nextInt(alive.size());
+        int randomIndex = Utils.RANDOM.nextInt(alive.size());
         return alive.get(randomIndex);
     }
 
@@ -127,7 +136,7 @@ public class PlayingState implements GameState {
         }
 
         //Thread-safe entity removal
-        plugin.getThreadSafeMethods().runSafeLambda(()->{
+        plugin.getThreadSafeMethods().runSafeLambda(() -> {
             ball.getEntity().remove();
         });
 
@@ -141,8 +150,7 @@ public class PlayingState implements GameState {
                 player.getSelf().sendMessage(LangKey.SPAWN_TP.formatted());
                 player.getSelf().performCommand("spawn");
             });
-
-            stateManager.nextGameState(new WaitingState());
+            plugin.getThreadSafeMethods().runSafeLambda(() -> stateManager.nextGameState(new WaitingState()));
         }, 100L);
     }
 
@@ -162,7 +170,7 @@ public class PlayingState implements GameState {
             //Change the glow...
             try {
                 plugin.getGlowingEntities().unsetGlowing(ball.getEntity(), lastTargeting.getSelf());
-                plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.AQUA);
+                plugin.getGlowingEntities().setGlowing(ball.getEntity(), targeting.getSelf(), ChatColor.RED);
             } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
@@ -261,7 +269,7 @@ public class PlayingState implements GameState {
 
     private void spawnFirework(Player player) {
         //Thread safe entity spawn
-        plugin.getThreadSafeMethods().runSafeLambda(()->{
+        plugin.getThreadSafeMethods().runSafeLambda(() -> {
             Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation().add(0, 5, 0), EntityType.FIREWORK);
             FireworkMeta meta = firework.getFireworkMeta();
             FireworkEffect effect = FireworkEffect.builder()
@@ -297,7 +305,7 @@ public class PlayingState implements GameState {
         else if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             if(!hitBallPlayer.hasSkill()) return;
             if(!player.getInventory().getItemInOffHand().equals(hitBallPlayer.getCurrentSkill().getIcon())) return;
-            hitBallPlayer.getCurrentSkill().executeSkill(player.getUniqueId(), stateManager);
+            hitBallPlayer.getCurrentSkill().executeSkill(hitBallPlayer, stateManager);
         }
 
     }
@@ -312,14 +320,8 @@ public class PlayingState implements GameState {
     @Override
     public void playerLeave(Player player) {
         // Remove the player's spawn location
-        if (spawnLocations.getPlayersSpawns().containsValue(player.getUniqueId())) {
-            Location key = spawnLocations.getPlayersSpawns().entrySet()
-                    .stream()
-                    .filter(entry -> player.getUniqueId().equals(entry.getValue()))
-                    .map(Map.Entry::getKey)
-                    .findFirst().get();
-            spawnLocations.getPlayersSpawns().replace(key, null);
-        }
+        stateManager.removePlayerFromSpawns(player.getUniqueId());
+
         if(running){
             // Stop game leave message
             world.sendMessage(LangKey.PLAYER_LEAVE_STOP.formatted("player_name", player.getName()));
@@ -349,9 +351,8 @@ public class PlayingState implements GameState {
         }
     }
 
-    public void revivePlayer(Player player){
-        HitBallPlayer hitBallPlayer = plugin.getWorldManager().getHitBallPlayer(player);
-        hitBallPlayer.getProperties().reset();
+    public void revivePlayer(HitBallPlayer player){
+        player.getProperties().reset();
         //player.teleport(stateManager.getSpawnLocations().getPlayersSpawns());
         switchPlayer();
         this.SPEED = 0.15D;

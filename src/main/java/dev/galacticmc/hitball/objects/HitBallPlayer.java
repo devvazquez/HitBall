@@ -1,19 +1,10 @@
-package dev.galacticmc.hitball.objects.states;
+package dev.galacticmc.hitball.objects;
 
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.skills.Skill;
+import dev.galacticmc.hitball.objects.states.InGameProperties;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.UUID;

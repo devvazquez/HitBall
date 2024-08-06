@@ -1,7 +1,6 @@
 package dev.galacticmc.hitball.objects;
 
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.states.HitBallPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

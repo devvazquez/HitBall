@@ -1,6 +1,7 @@
 package dev.galacticmc.hitball.objects.states;
 
 import dev.galacticmc.hitball.HitBallPlugin;
+import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
@@ -11,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -39,32 +39,13 @@ public class InGameProperties {
         this.plugin = plugin;
         this.bossBar = Bukkit.createBossBar(LangKey.SHIELD_ACTIVE.value, BarColor.BLUE, BarStyle.SOLID);
         this.chestPlate =  new ItemStack(Material.LEATHER_CHESTPLATE);
-
-        //Clear inv
-        player.getSelf().getInventory().clear();
-
         //Init white leather chestplate as shield.
         LeatherArmorMeta meta = (LeatherArmorMeta) chestPlate.getItemMeta();
         meta.setColor(Color.WHITE);
         meta.displayName(Component.text("Escudo"));
         chestPlate.setItemMeta(meta);
 
-        //Add the sword to the inv.
-        ItemStack sword = CustomStack.getInstance("the_sword_of_the_storm").getItemStack();
-        player.getSelf().getInventory().setItem(4, sword);
-
-        //Add the skill item to the inv.
-        ItemStack skill;
-        if(player.hasSkill()){
-            skill = player.getCurrentSkill().getIcon();
-        }else {
-            skill = new ItemStack(Material.BARRIER);
-            ItemMeta barrierMeta = skill.getItemMeta();
-            barrierMeta.lore(Collections.singletonList(Component.empty()));
-            barrierMeta.displayName(Component.text("Sin hablidad", NamedTextColor.RED));
-            skill.setItemMeta(barrierMeta);
-        }
-        player.getSelf().getInventory().setItemInOffHand(skill);
+        addItems();
     }
 
     public boolean isAlive() {
@@ -83,6 +64,34 @@ public class InGameProperties {
         devisualizeShield();
         disableFakeSpectatorMode();
         removeItems();
+    }
+
+    public void revive(){
+        reset();
+        addItems();
+    }
+
+    public void addItems(){
+
+        //Clear inv
+        player.getSelf().getInventory().clear();
+
+        //Add the sword to the inv.
+        ItemStack sword = CustomStack.getInstance("the_sword_of_the_storm").getItemStack();
+        player.getSelf().getInventory().setItem(4, sword);
+
+        //Add the skill item to the inv.
+        ItemStack skill;
+        if(player.hasSkill()){
+            skill = player.getCurrentSkill().getIcon();
+        }else {
+            skill = new ItemStack(Material.BARRIER);
+            ItemMeta barrierMeta = skill.getItemMeta();
+            barrierMeta.lore(Collections.singletonList(Component.empty()));
+            barrierMeta.displayName(Component.text("Sin hablidad", NamedTextColor.RED));
+            skill.setItemMeta(barrierMeta);
+        }
+        player.getSelf().getInventory().setItemInOffHand(skill);
     }
 
     public void removeItems(){
@@ -153,7 +162,7 @@ public class InGameProperties {
 
         // Make player invisible
         //Thread safe sync task
-        plugin.getThreadSafeMethods().runSafeLambda(()->{
+        plugin.getThreadSafeMethods().runSafeLambda(() -> {
             player.getSelf().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false));
             // Hide the player from all other players
             plugin.getWorldManager().getOnlinePlayers().forEach(p ->{
@@ -175,7 +184,7 @@ public class InGameProperties {
 
         //Make player visible
         //Thread safe sync task
-        plugin.getThreadSafeMethods().runSafeLambda(()->{
+        plugin.getThreadSafeMethods().runSafeLambda(() -> {
             player.getSelf().removePotionEffect(PotionEffectType.INVISIBILITY);
             // Hide the player from all other players
             plugin.getWorldManager().getOnlinePlayers().forEach(p ->{

@@ -3,17 +3,15 @@ package dev.galacticmc.hitball.objects.skills.impl;
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.skills.Skill;
+import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import dev.galacticmc.hitball.objects.states.impl.PlayingState;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
-import java.util.UUID;
 
 public class ReviveSkill extends Skill {
 
@@ -25,20 +23,18 @@ public class ReviveSkill extends Skill {
     }
 
     @Override
-    public void perfomSkill(UUID self, StateManager stateManager) {
+    public void perfomSkill(HitBallPlayer player, StateManager stateManager) {
         PlayingState state = (PlayingState)stateManager.getCurrentGameState();
+        state.revivePlayer(player);
     }
 
     @Override
-    public boolean checksForPlayer(UUID uuid, StateManager stateManager) {
-        Player player = Bukkit.getPlayer(uuid);
-        if(player != null){
-            if( player.isInvisible()
-                && stateManager.getCurrentGameState() instanceof PlayingState){
-                return true;
-            }else {
-                player.sendMessage(LangKey.REVIVE_CANT_USE.formatted());
-            }
+    public boolean checksForPlayer(HitBallPlayer player, StateManager stateManager) {
+        if( player.inGame && !player.getProperties().isAlive()
+            && stateManager.getCurrentGameState() instanceof PlayingState){
+            return true;
+        }else {
+            player.getSelf().sendMessage(LangKey.REVIVE_CANT_USE.formatted());
         }
         return false;
     }

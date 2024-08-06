@@ -67,7 +67,7 @@ public class BukkitRunnableProvider {
                 });
 
                 if (segundos <= 0) {
-                    if (world.getPlayers().size() >= minPlayers) {
+                    if (stateManager.getPlayers().size() >= minPlayers) {
                         //Cancel this task
                         cancel();
                         stateManager.nextGameState(new CountDownState());
@@ -75,7 +75,7 @@ public class BukkitRunnableProvider {
                         world.sendMessage(LangKey.RESTORE_COUNTDOWN.formatted());
                         segundos = 30;
                     }
-                } else if (world.getPlayers().size() >= stateManager.getMaxPlayers()) {
+                } else if (stateManager.getPlayers().size() >= stateManager.getMaxPlayers()) {
                     cancel();
                     stateManager.nextGameState(new CountDownState());
                 }

@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e703ff12-2198-44be-bee1-deeffdffac38" name="Changes" comment="Pre-commit to changing to CustomFurniture">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/GlowingEntities.java" afterDir="false" />
+    <list default="true" id="e703ff12-2198-44be-bee1-deeffdffac38" name="Changes" comment="Refactored some things">
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
@@ -16,14 +15,31 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/HitBallPlugin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/StateManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/StateManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/PlayingState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/objects/states/impl/WaitingState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/util/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/dev/galacticmc/hitball/util/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/lang_es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/lang_es.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/HitBallPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/ItemProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/ItemProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/ThreadSafeMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/ThreadSafeMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/ConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/ConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/WorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/managers/WorldManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/Skill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/skills/impl/ReviveSkill.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/BallEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/BallEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/HitBallPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/HitBallPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/InGameProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/InGameProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/SpawnLocations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/SpawnLocations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/StateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/StateManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/BukkitRunnableProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/BukkitRunnableProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/CountDownState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/PlayingState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/objects/states/impl/WaitingState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/galacticmc/hitball/util/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/lang_es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/lang_es.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +71,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="HitBall" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="HitBall" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -112,25 +134,26 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.BallBlade [shadowJar].executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.HitBall [shadowJar].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Biel Vazquez Mata/Coding/HitBall/src/main/java/dev/galacticmc/hitball/objects",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "configurable.group.language"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.BallBlade [shadowJar].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HitBall [compileJava].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.HitBall [shadowJar].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Biel Vazquez Mata/Coding/HitBall/src/main/java/dev/galacticmc/hitball/objects&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.language&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Biel Vazquez Mata\Coding\HitBall\src\main\java\dev\galacticmc\hitball\objects" />
@@ -141,7 +164,7 @@
       <recent name="C:\Coding\Plugins\BallBlade\libs" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.BallBlade [shadowJar]">
+  <component name="RunManager" selected="Gradle.HitBall [compileJava]">
     <configuration name="BallBlade [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -208,8 +231,31 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="HitBall [compileJava]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="compileJava" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.HitBall [compileJava]" />
         <item itemvalue="Gradle.BallBlade [shadowJar]" />
         <item itemvalue="Gradle.BallBlade [jar]" />
       </list>
@@ -280,7 +326,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722641057798</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Returned to FallingBlock &amp; redid glowing code.">
+      <option name="closed" value="true" />
+      <created>1722892066194</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1722892066194</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -303,7 +357,9 @@
     <MESSAGE value="Added async ball task &amp; thread sage methods." />
     <MESSAGE value="Added some thread-safe lambdas that caused IllegalStateException because of async calling." />
     <MESSAGE value="Pre-commit to changing to CustomFurniture" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pre-commit to changing to CustomFurniture" />
+    <MESSAGE value="Returned to FallingBlock &amp; redid glowing code." />
+    <MESSAGE value="Refactored some things" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored some things" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

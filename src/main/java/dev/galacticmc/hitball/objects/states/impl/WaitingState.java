@@ -1,22 +1,23 @@
 package dev.galacticmc.hitball.objects.states.impl;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
 import dev.galacticmc.hitball.objects.states.StateManager;
+import dev.galacticmc.hitball.util.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.*;
 
 public class WaitingState implements GameState {
 
-    private SpawnLocations spawnLocations;
+    private StateManager stateManager;
     private World world;
 
     /*
@@ -25,8 +26,7 @@ public class WaitingState implements GameState {
 
     @Override
     public void onEnable(HitBallPlugin plugin, StateManager stateManager) {
-
-        this.spawnLocations = stateManager.getSpawnLocations();
+        this.stateManager = stateManager;
         this.world = stateManager.getMiniGameWorld();
 
         BukkitRunnable waitForPlayers = BukkitRunnableProvider.manageWith(stateManager).waitingState();
@@ -48,37 +48,22 @@ public class WaitingState implements GameState {
     @Override
     public void playerJoin(Player player) {
         UUID playerUUID = player.getUniqueId();
-
-        // Find an available spawn location
-        Optional<Map.Entry<Location, UUID>> availableSeat = spawnLocations.getPlayersSpawns().entrySet()
-                .stream()
-                .filter(entry -> entry.getValue() == null)
-                .findFirst();
-
-        if (availableSeat.isPresent()) {
-            // Assign the player's UUID to the available location
-            spawnLocations.getPlayersSpawns().replace(availableSeat.get().getKey(), playerUUID);
+        stateManager.addPlayerToSpawns(playerUUID, (location) ->{
             // Optionally, teleport the player to the spawn location
-            player.teleport(availableSeat.get().getKey());
+            player.teleport(location);
             world.sendMessage(LangKey.PLAYER_JOIN.formatted("player_name", player.getName()));
             player.setWalkSpeed(0);
-        } else {
+        }, () -> {
             // Kick the player if no available seat is found
             player.performCommand("spawn");
             player.sendMessage(LangKey.GAME_FULL.formatted());
-        }
+        });
     }
 
     @Override
     public void playerLeave(Player player) {
-        if (spawnLocations.getPlayersSpawns().containsValue(player.getUniqueId())) {
-            Location key = spawnLocations.getPlayersSpawns().entrySet()
-                    .stream()
-                    .filter(entry -> player.getUniqueId().equals(entry.getValue()))
-                    .map(Map.Entry::getKey)
-                    .findFirst().get();
-            spawnLocations.getPlayersSpawns().replace(key, null);
-        }
+        stateManager.removePlayerFromSpawns(player.getUniqueId());
+
         world.sendMessage(LangKey.PLAYER_LEAVE.formatted("player_name", player.getName()));
         player.setWalkSpeed(0.2f);
     }

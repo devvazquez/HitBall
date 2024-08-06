@@ -16,6 +16,10 @@ public class BallEntity{
 
     private Vector velocity;
     private FallingBlock entity;
+    private Runnable callBack;
+    public void whenAlive(Runnable callBack){
+        this.callBack = callBack;
+    }
 
     public BallEntity(Location initialLocation, HitBallPlugin plugin){
         this.initialLocation = initialLocation;
@@ -31,7 +35,7 @@ public class BallEntity{
             entity.remove();
             location = getLocation();
         }
-        plugin.getThreadSafeMethods().runSafeLambda(()->{
+        plugin.getThreadSafeMethods().runSafeLambda(() -> {
             setEntity(createInitialFallingBlock(location));
             entity.setGravity(false);
             entity.setDropItem(false);
@@ -39,6 +43,7 @@ public class BallEntity{
             entity.setInvulnerable(true);
             setLocation(getLocation());
             setVelocity(getVelocity());
+            this.callBack.run();
         });
     }
 
@@ -68,9 +73,6 @@ public class BallEntity{
     }
 
     public FallingBlock getEntity(){
-        if(entity == null){
-            spawn();
-        }
         return entity;
     }
 

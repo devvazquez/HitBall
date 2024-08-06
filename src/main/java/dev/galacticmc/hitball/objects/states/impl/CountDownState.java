@@ -50,6 +50,8 @@ public class CountDownState implements GameState {
 
     @Override
     public void playerLeave(Player player) {
+        stateManager.removePlayerFromSpawns(player.getUniqueId());
+
         //Can't leave the game
         world.sendMessage(LangKey.RESTORE_COUNTDOWN.formatted());
         stateManager.nextGameState(new WaitingState());

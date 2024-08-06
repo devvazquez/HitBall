@@ -42,9 +42,6 @@ public final class HitBallPlugin extends JavaPlugin {
     }
 
     private LanguageManager languageManager;
-    public LanguageManager getLanguageManager() {
-        return languageManager;
-    }
 
     private ThreadSafeMethods threadSafeMethods;
     public ThreadSafeMethods getThreadSafeMethods(){

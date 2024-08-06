@@ -2,11 +2,13 @@ package dev.galacticmc.hitball.objects.managers;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.states.SpawnLocations;
+import dev.galacticmc.hitball.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ConfigManager {
 
@@ -47,7 +49,7 @@ public class ConfigManager {
             return null;
         }
 
-        HashMap<Location, UUID> tempHashMap = new HashMap<>();
+        ConcurrentHashMap<Location, UUID> tempHashMap = new ConcurrentHashMap<>();
         for (List<Integer> location : playerSpawns) {
             if (location.size() != 5) {
                 plugin.getLogger().severe(String.format("Location list: %s, in 'player_spawns' inside config.yml should only be 5 integers long but was: %s", Arrays.toString(location.toArray()), location.size()));
@@ -56,7 +58,7 @@ public class ConfigManager {
             Location tempLoc = new Location(world, location.get(0), location.get(1), location.get(2), location.get(3), location.get(4));
             tempLoc = tempLoc.toCenterLocation();
             tempLoc.setY(location.get(1));
-            tempHashMap.put(tempLoc, null);
+            tempHashMap.put(tempLoc, Utils.DUMMY_UUID);
         }
         assert tempHashMap.isEmpty();
         return new SpawnLocations(ballSpawnLoc, tempHashMap);
