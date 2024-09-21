@@ -5,6 +5,7 @@ import dev.galacticmc.hitball.objects.skills.Skill;
 import dev.galacticmc.hitball.objects.states.InGameProperties;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,21 +15,25 @@ public class HitBallPlayer {
     private final HitBallPlugin plugin;
     private final UUID self;
 
-    private final List<Skill> skills;
+    private List<Skill> skills;
     private Skill selectedSkill;
     public boolean hasSkill(){
         return selectedSkill != null;
     }
+    public void updateSkills() {
+        this.skills = plugin.getSkillManager().getSkillsForPlayer(getSelf());
+        if(this.selectedSkill != null){
+            this.selectedSkill = skills.stream().filter(skill -> skill.getPermission().equals(selectedSkill.getPermission())).findFirst().orElse(null);
+        }else {
+            this.selectedSkill = skills.stream().findFirst().orElse(null);
+        }
+    }
+
     public Skill getCurrentSkill(){
         return selectedSkill;
     }
-
-    private String selectedSword;
-    public String getSelectedSword(){
-        return selectedSword;
-    }
-    public void setSelectedSword(String swordNameSpace){
-        this.selectedSword = swordNameSpace;
+    public void setSelectedSkill(Skill skill){
+        this.selectedSkill = skill;
     }
 
     private InGameProperties properties;
@@ -43,14 +48,15 @@ public class HitBallPlayer {
         this.self = self;
         this.skills = skills;
         this.selectedSkill = skills.stream().findFirst().orElse(null);
-        this.selectedSword = plugin.getDatabase().getEquippedItem(self);
     }
+
 
     public Player getSelf() {
         return Bukkit.getPlayer(self);
     }
 
     public List<Skill> getSkills() {
+        updateSkills();
         return skills;
     }
 

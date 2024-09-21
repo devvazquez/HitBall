@@ -2,8 +2,8 @@ package dev.galacticmc.hitball.objects.states.impl;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
-import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
+import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,6 +18,7 @@ public class CountDownState implements GameState {
     private HitBallPlugin plugin;
     private StateManager stateManager;
     private World world;
+    private BukkitRunnable countDown;
 
     @Override
     public void onEnable(HitBallPlugin plugin, StateManager stateManager) {
@@ -30,7 +31,7 @@ public class CountDownState implements GameState {
         //Iniciar el juego
         //Ultimos tres segundos
         //Primeros 7 segundos.
-        BukkitRunnable countDown = BukkitRunnableProvider.manageWith(stateManager).countDownState();
+        this.countDown = BukkitRunnableProvider.manageWith(stateManager).countDownState();
         countDown.runTaskTimer(plugin, 0L, 20L);
     }
 
@@ -54,6 +55,7 @@ public class CountDownState implements GameState {
 
         //Can't leave the game
         world.sendMessage(LangKey.RESTORE_COUNTDOWN.formatted());
+        countDown.cancel();
         stateManager.nextGameState(new WaitingState());
         player.setWalkSpeed(0.2f);
     }

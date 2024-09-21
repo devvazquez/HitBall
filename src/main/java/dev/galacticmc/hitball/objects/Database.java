@@ -2,16 +2,13 @@ package dev.galacticmc.hitball.objects;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.sql.*;
 import java.util.*;
 
-public class Database implements Listener {
+public class Database {
 
     private final HitBallPlugin plugin;
     private final String host, database, username, password;
@@ -47,47 +44,22 @@ public class Database implements Listener {
 
         // Create stats table
         createTable("Stats", Utils.createMap(
-                "Uuid", "VARCHAR(36) PRIMARY KEY",
+                "Uuid", "VARCHAR(36)",
                 "Kills", "INTEGER",
                 "Wins", "INTEGER",
                 "Losses", "INTEGER",
-                "GamesPlayed", "INTEGER"));
-        // Keep track of
-        createTable("EquipedItem", Utils.createMap(
-                "Uuid", "VARCHAR(36) PRIMARY KEY",
-                "SwordItem", "VARCHAR(36)"));
-        // Create player swords table
-        createTable("PlayerSwords", Utils.createMap(
-                "Uuid", "VARCHAR(36) PRIMARY KEY",
-                "Swords", "JSON"));
+                "GamesPlayed", "INTEGER"), "Uuid");
+
+        // Keep track of equipped items
+        createTable("EquippedSkill", Utils.createMap(
+                "Uuid", "VARCHAR(36)",
+                "Skill", "VARCHAR(36)"), "Uuid");
+
         plugin.getLogger().fine("Conectado a la base de datos!");
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void playerJoin(PlayerJoinEvent e) {
-        UUID playerUUID = e.getPlayer().getUniqueId();
-        setEquipedItemsDefaults(playerUUID);
-    }
-
-    private void setEquipedItemsDefaults(UUID playerUUID) {
-        //Default items adder item namespace.
-        String defaultSword = plugin.getConfig().getString("default-sword-ia-item", "ork_sword");
-        try (Connection con = openConnection()) {
-            String query = "INSERT INTO EquipedItems (Uuid, SwordItem) VALUES (?, ?) " +
-                    "ON DUPLICATE KEY UPDATE SwordItem = IFNULL(SwordItem, ?)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, playerUUID.toString());
-            stmt.setString(2, defaultSword);
-            stmt.setString(3, defaultSword);
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private java.sql.Connection openConnection() throws SQLException, ClassNotFoundException {
-        //Load driver
+    private Connection openConnection() throws SQLException, ClassNotFoundException {
+        // Load driver
         Class.forName("org.mariadb.jdbc.Driver");
         // Connection Configuration
         Properties connConfig = new Properties();
@@ -96,16 +68,22 @@ public class Database implements Listener {
         return DriverManager.getConnection(String.format("jdbc:mariadb://%s:%s/%s", host, port, database), connConfig);
     }
 
-    private void createTable(String tableName, HashMap<String, String> nameTypes) {
+    private void createTable(String tableName, HashMap<String, String> nameTypes, String primaryKey) {
         // Open connection
-        try (java.sql.Connection con = openConnection()) {
+        try (Connection con = openConnection()) {
             // Prepare the statement
             StringBuilder sql = new StringBuilder(String.format("CREATE TABLE IF NOT EXISTS %s ( ", tableName));
             // For each entry, append to the SQL string
             for (Map.Entry<String, String> nameType : nameTypes.entrySet()) {
                 sql.append(nameType.getKey()).append(" ").append(nameType.getValue()).append(", ");
             }
-            sql.delete(sql.length() - 2, sql.length());
+            // Append the primary key constraint
+            if (primaryKey != null && !primaryKey.isEmpty()) {
+                sql.append("PRIMARY KEY (").append(primaryKey).append(")");
+            } else {
+                // Remove the last comma and space if no primary key is provided
+                sql.delete(sql.length() - 2, sql.length());
+            }
             sql.append(");");
             PreparedStatement stmt = con.prepareStatement(sql.toString());
             stmt.executeUpdate();
@@ -114,6 +92,7 @@ public class Database implements Listener {
             e.printStackTrace();
         }
     }
+
 
     private int getStat(UUID playerUUID, String stat) {
         try (Connection con = openConnection()) {
@@ -176,76 +155,48 @@ public class Database implements Listener {
         return null;
     }
 
-    public void addPlayerSword(UUID playerUUID, String sword) {
+    public int getKillsByRank(int rank) {
+        int kills = 0;
+        if(rank <= 0) throw new IllegalStateException("El top no puede ser menor de 1!");
         try (Connection con = openConnection()) {
-            String query = "INSERT INTO PlayerSwords (id, swords) VALUES (?, JSON_ARRAY(?)) " +
-                    "ON DUPLICATE KEY UPDATE swords = JSON_ARRAY_APPEND(swords, '$', ?)";
+            String query = "SELECT Kills FROM Stats ORDER BY Kills DESC LIMIT 1 OFFSET ?";
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, playerUUID.toString());
-            stmt.setString(2, sword);
-            stmt.setString(3, sword);
-            stmt.executeUpdate();
+            stmt.setInt(1, rank - 1);  // Rank is 1-based, so subtract 1 for 0-based index.
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                kills = rs.getInt("Kills");
+            }
+
+            rs.close();
             stmt.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        return kills;
     }
 
-    public void setEquippedItem(UUID playerUUID, String swordItem) {
+    public String getNameByRank(int rank) {
+        String playerName = null;
+        if(rank <= 0) throw new IllegalStateException("El top no puede ser menor de 1!");
         try (Connection con = openConnection()) {
-            String query = "INSERT INTO EquipedItems (Uuid, SwordItem) VALUES (?, ?) " +
-                    "ON DUPLICATE KEY UPDATE SwordItem = ?";
+            String query = "SELECT Uuid FROM Stats ORDER BY Kills DESC LIMIT 1 OFFSET ?";
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, playerUUID.toString());
-            stmt.setString(2, swordItem);
-            stmt.setString(3, swordItem);
-            stmt.executeUpdate();
-            stmt.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getEquippedItem(UUID playerUUID) {
-        String equippedItem = null;
-        try (Connection con = openConnection()) {
-            String query = "SELECT SwordItem FROM EquipedItems WHERE Uuid = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, playerUUID.toString());
+            stmt.setInt(1, rank - 1);  // Rank is 1-based, so subtract 1 for 0-based index.
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                equippedItem = rs.getString("SwordItem");
+                UUID uuid = UUID.fromString(rs.getString("Uuid"));
+                playerName = Objects.requireNonNull(Bukkit.getOfflinePlayer(uuid)).getName();
             }
             rs.close();
             stmt.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return equippedItem;
+
+        return playerName != null ? playerName : "Unknown";
     }
-
-
-    public List<String> getPlayerSwords(UUID playerUUID) {
-        List<String> swords = new ArrayList<>();
-        try (Connection con = openConnection()) {
-            String query = "SELECT swords FROM PlayerSwords WHERE id = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, playerUUID.toString());
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Array swordsArray = rs.getArray("swords");
-                if (swordsArray != null) {
-                    swords = Arrays.asList((String[]) swordsArray.getArray());
-                }
-            }
-            rs.close();
-            stmt.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return swords;
-    }
-
 
     // Getters
     public int getKills(UUID playerUUID) {
@@ -300,19 +251,23 @@ public class Database implements Listener {
 
     // Methods to get the player with the most stats
     public String getPlayerWithMostKills() {
-        return getPlayerWithMost("Kills");
+        return toName(getPlayerWithMost("Kills"));
     }
 
     public String getPlayerWithMostWins() {
-        return getPlayerWithMost("Wins");
+        return toName(getPlayerWithMost("Wins"));
     }
 
     public String getPlayerWithMostLosses() {
-        return getPlayerWithMost("Losses");
+        return toName(getPlayerWithMost("Losses"));
     }
 
     public String getPlayerWithMostGamesPlayed() {
-        return getPlayerWithMost("GamesPlayed");
+        return toName(getPlayerWithMost("GamesPlayed"));
+    }
+
+    private String toName(String uuid){
+        return Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
     }
 
 }

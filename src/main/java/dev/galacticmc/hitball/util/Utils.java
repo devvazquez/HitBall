@@ -3,12 +3,13 @@ package dev.galacticmc.hitball.util;
 import com.google.common.collect.ImmutableMap;
 import dev.galacticmc.hitball.raytracing.AABB;
 import dev.galacticmc.hitball.raytracing.Ray;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.World;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -136,6 +137,17 @@ public class Utils {
                 g = color.getGreen() - compare.getGreen(),
                 b = color.getBlue() - compare.getBlue();
         return a * a + r * r + g * g + b * b;
+    }
+
+    public static String[] removeElements(String[] input, String deleteMe) {
+        List<String> result = new ArrayList<>();
+        String[] fit = new String[input.length - 1];
+        for(String item : input){
+            if(item.equals(deleteMe)) continue;
+            result.add(item);
+        }
+
+        return result.toArray(fit);
     }
 
 }

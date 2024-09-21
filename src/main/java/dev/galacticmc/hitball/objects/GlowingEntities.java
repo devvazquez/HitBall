@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

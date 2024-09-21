@@ -1,21 +1,28 @@
 package dev.galacticmc.hitball.objects.managers;
 
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.galacticmc.hitball.objects.skills.SkillManager;
 import dev.galacticmc.hitball.objects.HitBallPlayer;
+import dev.galacticmc.hitball.objects.skills.SkillManager;
 import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.StateManager;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class WorldManager implements Listener {
 
@@ -24,7 +31,6 @@ public class WorldManager implements Listener {
     private final ConfigurationSection worldsSection;
     //Thread safe variant of ArrayList
     private final CopyOnWriteArrayList<HitBallPlayer> players;
-    private final SkillManager skillManager;
 
     public CopyOnWriteArrayList<HitBallPlayer> getOnlinePlayers(){
         return players;
@@ -42,7 +48,6 @@ public class WorldManager implements Listener {
             plugin.getPluginLoader().disablePlugin(plugin);
         }
         this.players = new CopyOnWriteArrayList<>();
-        this.skillManager = new SkillManager(plugin);
     }
 
     // - STATIC EVENTS -
@@ -91,31 +96,48 @@ public class WorldManager implements Listener {
         }
     }
 
-    public World getBestWorld() {
+    //Sorted: Fewer players to be full
+    //Filtered: non-full worlds;
+    private Stream<World> getAbaliableWorldStream(){
         return worldPerStateManager.keySet().stream()
                 .sorted(Comparator.comparingInt(world ->
                         worldPerStateManager.get(world).getMaxPlayers() - world.getPlayers().size()))
-                .filter(world -> world.getPlayers().size() < worldPerStateManager.get(world).getMaxPlayers())
+                .filter(world -> world.getPlayers().size() < worldPerStateManager.get(world).getMaxPlayers());
+    }
+
+    public World getBestWorld() {
+        return getAbaliableWorldStream()
                 .findFirst()
                 .orElse(null);
     }
 
-    @EventHandler
+    public World getBestWorld(int maxPlayers){
+        return getAbaliableWorldStream()
+                .filter(world -> worldPerStateManager.get(world).getMaxPlayers() == maxPlayers)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
     public void playerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         if(players.stream().noneMatch(hitBallPlayer -> hitBallPlayer.getSelf() == player)){
-            HitBallPlayer newPlayer = new HitBallPlayer(plugin, player.getUniqueId(), skillManager.getSkillsForPlayer(player));
+            HitBallPlayer newPlayer = new HitBallPlayer(plugin, player.getUniqueId(), plugin.getSkillManager().getSkillsForPlayer(player));
             players.add(newPlayer);
         }
     }
 
-    public HitBallPlayer getHitBallPlayer(Player player) {
-        Optional<HitBallPlayer> hitPlayer = players.stream().filter(hitBallPlayer -> hitBallPlayer.getSelf() == player).findFirst();
+    public HitBallPlayer getHitBallPlayer(UUID player) {
+        Optional<HitBallPlayer> hitPlayer = players.stream().filter(hitBallPlayer -> hitBallPlayer.getSelf().getUniqueId() == player).findFirst();
         if(hitPlayer.isPresent()){
             return hitPlayer.get();
         }else{
             throw new RuntimeException("No se pudo encotrar el jugador en la lista.");
         }
+    }
+
+    public HitBallPlayer getHitBallPlayer(Player player) {
+        return getHitBallPlayer(player.getUniqueId());
     }
 
     @EventHandler

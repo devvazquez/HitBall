@@ -1,5 +1,7 @@
 package dev.galacticmc.hitball.objects;
 
+import dev.galacticmc.hitball.objects.skills.Skill;
+import dev.galacticmc.hitball.objects.skills.impl.ReviveSkill;
 import dev.galacticmc.hitball.util.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -34,6 +36,7 @@ public enum LangKey {
     PLAYER_LEAVE_STOP("player_leave_stop"),
     SHIELD_ACTIVE("shield_active"),
     //Abilities
+    DEFAULT_CANT_USE("default_cant_use"),
     REVIVE_CANT_USE("revive_cant_use");
 
     public final String key;
@@ -64,6 +67,20 @@ public enum LangKey {
             base = base.replaceText(TextReplacementConfig.builder().matchLiteral(match).replacement(replace).build());
         }
         return base;
+    }
+
+    /**
+     *
+     * TODO: Change to swtich expression.
+     * @param skill
+     * @return The corresponent lang key to be used.
+     */
+    public static LangKey getFailedSkillTranslation(Skill skill) {
+        if(skill instanceof ReviveSkill){
+            return LangKey.REVIVE_CANT_USE;
+        }else {
+            return LangKey.DEFAULT_CANT_USE;
+        }
     }
 
 }

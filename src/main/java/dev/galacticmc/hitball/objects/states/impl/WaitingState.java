@@ -2,18 +2,17 @@ package dev.galacticmc.hitball.objects.states.impl;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.LangKey;
-import dev.galacticmc.hitball.objects.states.SpawnLocations;
 import dev.galacticmc.hitball.objects.states.GameState;
 import dev.galacticmc.hitball.objects.states.StateManager;
-import dev.galacticmc.hitball.util.Utils;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.swing.plaf.nimbus.State;
-import java.util.*;
+import java.util.UUID;
 
 public class WaitingState implements GameState {
 
@@ -32,10 +31,6 @@ public class WaitingState implements GameState {
         BukkitRunnable waitForPlayers = BukkitRunnableProvider.manageWith(stateManager).waitingState();
         waitForPlayers.runTaskTimer(plugin, 0L, 20L);
 
-        //Can't walk
-        world.getPlayers().forEach(player -> {
-            player.setWalkSpeed(0.0f);
-        });
     }
 
     @Override
@@ -48,7 +43,7 @@ public class WaitingState implements GameState {
     @Override
     public void playerJoin(Player player) {
         UUID playerUUID = player.getUniqueId();
-        stateManager.addPlayerToSpawns(playerUUID, (location) ->{
+        stateManager.addPlayerToSpawns(playerUUID, (location) -> {
             // Optionally, teleport the player to the spawn location
             player.teleport(location);
             world.sendMessage(LangKey.PLAYER_JOIN.formatted("player_name", player.getName()));

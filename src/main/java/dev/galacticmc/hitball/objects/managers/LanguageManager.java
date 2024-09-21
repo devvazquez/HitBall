@@ -3,7 +3,9 @@ package dev.galacticmc.hitball.objects.managers;
 import dev.galacticmc.hitball.HitBallPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
+
 import static dev.galacticmc.hitball.objects.LangKey.*;
 
 public class LanguageManager {

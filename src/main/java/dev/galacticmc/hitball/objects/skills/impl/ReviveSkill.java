@@ -1,25 +1,23 @@
 package dev.galacticmc.hitball.objects.skills.impl;
 
 import dev.galacticmc.hitball.HitBallPlugin;
+import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.LangKey;
 import dev.galacticmc.hitball.objects.skills.Skill;
-import dev.galacticmc.hitball.objects.HitBallPlayer;
 import dev.galacticmc.hitball.objects.states.StateManager;
 import dev.galacticmc.hitball.objects.states.impl.PlayingState;
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.Collections;
 
 public class ReviveSkill extends Skill {
 
-    public ReviveSkill(HitBallPlugin plugin) {
-        super(plugin);
-        ItemStack icon = new ItemStack(Material.YELLOW_BED);
-        setItemIcon(icon);
+    public ReviveSkill(HitBallPlugin plugin, String perm) {
+        super(plugin, perm,
+                "Otra oportunidad",
+                Component.text("Te permite revivir si has muerto."),
+                Material.YELLOW_BED,
+                1);
     }
 
     @Override
@@ -33,8 +31,6 @@ public class ReviveSkill extends Skill {
         if( player.inGame && !player.getProperties().isAlive()
             && stateManager.getCurrentGameState() instanceof PlayingState){
             return true;
-        }else {
-            player.getSelf().sendMessage(LangKey.REVIVE_CANT_USE.formatted());
         }
         return false;
     }

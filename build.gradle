@@ -37,12 +37,13 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.11.6'
     //ItemsAdder
     compileOnly 'com.github.LoneDev6:API-ItemsAdder:3.6.1'
-    // MariaDB
+    //MariaDB
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.7'
     //GlowAPI
-    implementation 'io.netty:netty-all:4.1.68.Final'
+    compileOnly 'io.netty:netty-all:4.1.68.Final'
     //Inventory
     implementation "xyz.xenondevs.invui:invui:1.33"
+    compileOnly "net.kyori:adventure-text-minimessage:4.17.0"
 
 }
 

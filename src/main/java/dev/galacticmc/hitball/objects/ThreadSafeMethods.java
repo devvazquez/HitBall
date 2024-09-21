@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class ThreadSafeMethods {
 
@@ -25,8 +26,18 @@ public class ThreadSafeMethods {
                 .toList();
     }
 
+    /**
+     * This method will execute the given Runnable in the Main thread within the next tick
+     * @param lambda The lambda to be run.
+     * @see Thread
+     * @see org.bukkit.scheduler.BukkitTask
+     */
     public void runSafeLambda(Runnable lambda){
-        Bukkit.getScheduler().runTask(plugin, lambda);
+        Callable<Boolean> call = () -> {
+            lambda.run();
+            return true;
+        };
+        var f = Bukkit.getScheduler().callSyncMethod(plugin, call);
     }
 
 }

@@ -2,9 +2,10 @@ package dev.galacticmc.hitball.objects.gui;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.objects.HitBallPlayer;
+import dev.galacticmc.hitball.objects.gui.skills.SelectedSkillItem;
+import dev.galacticmc.hitball.objects.gui.skills.SkillItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.gui.structure.Markers;
@@ -24,25 +25,24 @@ public class GuiProvider {
         this.plugin = plugin;
     }
 
-    public Window provideSwordsWindow(HitBallPlayer hitBallPlayer){
+    public Window provideSkillsWindow(HitBallPlayer hitBallPlayer){
         //Bukkit player
         Player player = hitBallPlayer.getSelf();
 
         //Gui border
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(""));
 
-        // an example list of items to display
-        List<Item> items = plugin.getDatabase().getPlayerSwords(player.getUniqueId()).stream()
-                .map(namespace -> new SwordItem(plugin, namespace, hitBallPlayer.getSelectedSword().equals(namespace)))
+        //Stream will only be mapped if there are elements --> current skill shouldn't be null?
+        List<Item> items = hitBallPlayer.getSkills().stream()
+                .map(skill -> {
+                    var item = new SkillItem(plugin, skill, hitBallPlayer.getCurrentSkill().getPermission().equals(skill.getPermission()));
+                    plugin.getServer().getPluginManager().registerEvents(item, plugin);
+                    return item;
+                })
                 .collect(Collectors.toList());
 
-        //Register the events for the items
-        items.forEach(item -> {
-            plugin.getServer().getPluginManager().registerEvents((Listener) item, plugin);
-        });
-
         //Register the selected item
-        SelectedSwordItem selectedSwordItem = new SelectedSwordItem(hitBallPlayer);
+        SelectedSkillItem selectedSwordItem = new SelectedSkillItem(hitBallPlayer);
         plugin.getServer().getPluginManager().registerEvents(selectedSwordItem, plugin);
 
         //Create the gui
@@ -60,9 +60,10 @@ public class GuiProvider {
                 .setContent(items)
                 .build();
         return Window.single()
-                    .setGui(gui)
-                    .setTitle("Seleccionar Espada")
-                    .build(player);
+                .setGui(gui)
+                .setTitle("Seleccionar Habilidad")
+                .build(player);
     }
+
 
 }

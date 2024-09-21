@@ -1,12 +1,9 @@
 package dev.galacticmc.hitball.objects.states;
 
 import dev.galacticmc.hitball.HitBallPlugin;
-import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.CustomEntity;
-import dev.lone.itemsadder.api.CustomFurniture;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
 public class BallEntity{
@@ -47,6 +44,7 @@ public class BallEntity{
             entity.setGravity(false);
             entity.setDropItem(false);
             entity.setCustomName("Ball");
+            entity.setCustomNameVisible(false);
             entity.setInvulnerable(true);
             setLocation(getLocation());
             setVelocity(getVelocity());
@@ -80,7 +78,7 @@ public class BallEntity{
         this.entity = e;
     }
 
-    public FallingBlock getEntity(){
+    public FallingBlock getEntity() {
         return entity;
     }
 

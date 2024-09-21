@@ -16,7 +16,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -80,12 +83,13 @@ public class StateManager implements Listener {
             plugin.getLogger().info("Next game state '%s' for world: %s".formatted(currentGameState.getClass().getCanonicalName(), miniGameWorld.getName()));
             HandlerList.unregisterAll(currentGameState);
             currentGameState.onDisable();
+            currentGameState = null;
         }else {
             plugin.getLogger().info("First game state '%s' for world: %s".formatted(state.getClass().getCanonicalName(), miniGameWorld.getName()));
         }
         this.currentGameState = state;
-        plugin.getServer().getPluginManager().registerEvents(currentGameState, plugin);
-        currentGameState.onEnable(plugin, this);
+        plugin.getServer().getPluginManager().registerEvents(state, plugin);
+        state.onEnable(plugin, this);
     }
 
     public void addPlayerToSpawns(UUID playerUUID, Consumer<Location> ifSo, Runnable ifNot){
@@ -152,7 +156,7 @@ public class StateManager implements Listener {
         Player player = event.getPlayer();
         if(player.getWorld() == miniGameWorld){
             currentGameState.playerJoin(player);
-        } else if (player == miniGameWorld) {
+        } else if (event.getFrom() == miniGameWorld) {
             currentGameState.playerLeave(event.getPlayer());
         }
     }

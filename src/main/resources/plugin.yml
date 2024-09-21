@@ -4,3 +4,13 @@ main: dev.galacticmc.hitball.HitBallPlugin
 api-version: '1.16'
 load: STARTUP
 softdepend: [PlaceholderAPI]
+permissions:
+  hitball.revive:
+    default: false
+    description: Adds the Revive skill to the user.
+  hitball.lockplayers:
+    default: false
+    description: Adds the Lock Players skill to the user.
+  hitball.slowdown:
+    default: false
+    description: Adds the Slowdown skill to the user.

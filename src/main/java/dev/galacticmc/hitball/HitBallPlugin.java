@@ -4,18 +4,18 @@ import com.google.common.collect.Lists;
 import dev.galacticmc.hitball.commands.CoreCommand;
 import dev.galacticmc.hitball.commands.SubCommand;
 import dev.galacticmc.hitball.commands.impl.*;
+import dev.galacticmc.hitball.objects.Database;
 import dev.galacticmc.hitball.objects.GlowingEntities;
+import dev.galacticmc.hitball.objects.HitBallExpansion;
 import dev.galacticmc.hitball.objects.ThreadSafeMethods;
 import dev.galacticmc.hitball.objects.gui.GuiProvider;
 import dev.galacticmc.hitball.objects.managers.ConfigManager;
-import dev.galacticmc.hitball.objects.Database;
-import dev.galacticmc.hitball.objects.HitBallExpansion;
 import dev.galacticmc.hitball.objects.managers.LanguageManager;
 import dev.galacticmc.hitball.objects.managers.WorldManager;
+import dev.galacticmc.hitball.objects.skills.SkillManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.xenondevs.invui.gui.structure.Markers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public final class HitBallPlugin extends JavaPlugin {
+
+    private SkillManager skillManager;
+    public SkillManager getSkillManager() {
+        return skillManager;
+    }
 
     private WorldManager worldManager;
     public WorldManager getWorldManager() {
@@ -39,8 +44,6 @@ public final class HitBallPlugin extends JavaPlugin {
     public Database getDatabase() {
         return database;
     }
-
-    private LanguageManager languageManager;
 
     private ThreadSafeMethods threadSafeMethods;
     public ThreadSafeMethods getThreadSafeMethods(){
@@ -59,10 +62,8 @@ public final class HitBallPlugin extends JavaPlugin {
 
     /*
         TODO:
-            - Fix statistics
-            - Add cooldown + speed increment
-            - Fully support swords (cofig file? db?) - 50%
-            - Add chest gui to see available swords / skill
+            - Add translation keys
+            - Add new skills (works with permissions.)
      */
 
     @Override
@@ -70,20 +71,29 @@ public final class HitBallPlugin extends JavaPlugin {
         // Save the 'config.yml' file.
         saveDefaultConfig();
 
+        new LanguageManager(this);
+
         // Initialize managers
-        this.configManager = new ConfigManager(this);
+        this.skillManager = new SkillManager(this);
         this.worldManager = new WorldManager(this);
+        this.configManager = new ConfigManager(this);
         getServer().getPluginManager().registerEvents(worldManager, this);
-        // Initialize the database
         this.database = new Database(this);
-        this.languageManager = new LanguageManager(this);
         this.threadSafeMethods = new ThreadSafeMethods(this);
         this.glowingEntities = new GlowingEntities(this);
         this.guiProvider = new GuiProvider(this);
 
         // Add commands
         try {
-            addCommand(BallSpawnPosition.class, PlayerSpawnPosition.class, ReloadSubCommand.class, TeleportCommand.class, SwordsCommand.class);
+            addCommand(
+                    GenerateCrateRewardCommand.class,
+                    PlayerSpawnPositionCommand.class,
+                    BallSpawnPositionCommand.class,
+                    ReloadSubCommand.class,
+                    FindGameCommand.class,
+                    SkillsCommand.class,
+                    StatsCommand.class
+            );
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -94,7 +104,7 @@ public final class HitBallPlugin extends JavaPlugin {
             // Register the PAPI extension
             new HitBallExpansion(this).register();
         } else {
-            this.getLogger().warning("HitBall will not provide PAPI variables as it does not exist.");
+            this.getLogger().warning("HitBall won't provide PAPI variables as it does not exist.");
         }
 
         //Check for ItemsAdder plugin

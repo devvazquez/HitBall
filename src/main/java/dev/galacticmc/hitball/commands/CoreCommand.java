@@ -2,7 +2,6 @@ package dev.galacticmc.hitball.commands;
 
 import dev.galacticmc.hitball.HitBallPlugin;
 import dev.galacticmc.hitball.util.Utils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,8 +31,9 @@ public class CoreCommand extends Command {
 
         if (args.length > 0) {
             for (int i = 0; i < getSubCommands().size(); i++) {
-                if (args[0].equalsIgnoreCase(getSubCommands().get(i).getName()) || (getSubCommands().get(i).getAliases() != null && getSubCommands().get(i).getAliases().contains(args[0]))) {
-                    getSubCommands().get(i).perform(sender, args);
+                SubCommand subCommand = getSubCommands().get(i);
+                if (args[0].equalsIgnoreCase(subCommand.getName()) || (subCommand.getAliases() != null && subCommand.getAliases().contains(args[0]))) {
+                    getSubCommands().get(i).perform(sender, Utils.removeElements(args, subCommand.getName()));
                 }
             }
         } else {

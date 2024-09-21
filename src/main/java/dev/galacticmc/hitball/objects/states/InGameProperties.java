@@ -26,7 +26,7 @@ public class InGameProperties {
     private final HitBallPlugin plugin;
     private final HitBallPlayer player;
 
-    private boolean dead = false;
+    private boolean dead;
     private boolean shielded = false;
     private final BossBar bossBar;
     private final ItemStack chestPlate;
@@ -37,6 +37,8 @@ public class InGameProperties {
     public InGameProperties(HitBallPlayer player, HitBallPlugin plugin) {
         this.player = player;
         this.plugin = plugin;
+
+        this.dead = false; // Alive
         this.bossBar = Bukkit.createBossBar(LangKey.SHIELD_ACTIVE.value, BarColor.BLUE, BarStyle.SOLID);
         this.chestPlate =  new ItemStack(Material.LEATHER_CHESTPLATE);
         //Init white leather chestplate as shield.
@@ -80,6 +82,10 @@ public class InGameProperties {
         ItemStack sword = CustomStack.getInstance("the_sword_of_the_storm").getItemStack();
         player.getSelf().getInventory().setItem(4, sword);
 
+        addSkillItem();
+    }
+
+    public void addSkillItem(){
         //Add the skill item to the inv.
         ItemStack skill;
         if(player.hasSkill()){
@@ -119,7 +125,7 @@ public class InGameProperties {
                 }
                 long remainingTime = DEACTIVATE_SHIELD - System.currentTimeMillis();
                 if (remainingTime > 0) {
-                    bossBar.setProgress(Math.max((double) remainingTime / SHIELD_DURATION, 0.0D));
+                    plugin.getThreadSafeMethods().runSafeLambda(() -> bossBar.setProgress(Math.max((double) remainingTime / SHIELD_DURATION, 0.0D)));
                 } else {
                     //Shield didn't get used in 3s.
                     cancel();

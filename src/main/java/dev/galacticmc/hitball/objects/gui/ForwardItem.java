@@ -1,5 +1,6 @@
 package dev.galacticmc.hitball.objects.gui;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.item.ItemProvider;
@@ -14,8 +15,8 @@ public class ForwardItem extends PageItem {
 
     @Override
     public ItemProvider getItemProvider(PagedGui<?> gui) {
-        ItemBuilder builder = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE);
-        builder.setDisplayName("Siguente página")
+        ItemBuilder builder = new ItemBuilder(Material.GREEN_WOOL);
+        builder.setDisplayName(ChatColor.GREEN + "Siguente página")
                 .addLoreLines(gui.hasNextPage()
                         ? "Ir a la página " + (gui.getCurrentPage() + 2) + "/" + gui.getPageAmount()
                         : "Es la última página!");

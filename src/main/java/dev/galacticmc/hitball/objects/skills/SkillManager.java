@@ -1,41 +1,42 @@
 package dev.galacticmc.hitball.objects.skills;
 
 import dev.galacticmc.hitball.HitBallPlugin;
+import dev.galacticmc.hitball.objects.skills.impl.InvisibleSkill;
 import dev.galacticmc.hitball.objects.skills.impl.ReviveSkill;
-import dev.galacticmc.hitball.objects.states.StateManager;
-import org.bukkit.Bukkit;
+import dev.galacticmc.hitball.objects.skills.impl.movement.LockPlayersSkill;
+import dev.galacticmc.hitball.objects.skills.impl.movement.SlowDownSkill;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SkillManager implements Listener {
 
-    private final HitBallPlugin plugin;
+    public final ReviveSkill REVIVE_SKILL;
+    public final SlowDownSkill SLOW_DOWN_SKILL;
+    public final LockPlayersSkill LOCK_PLAYERS_SKILL;
+    public final InvisibleSkill INVISIBLE_SKILL;
+    public final List<Skill> STATIC_SKILLS = new ArrayList<>();
 
     public SkillManager(HitBallPlugin hitBallPlugin) {
-        this.plugin = hitBallPlugin;
+        REVIVE_SKILL = new ReviveSkill(hitBallPlugin, "revive");
+        STATIC_SKILLS.add(REVIVE_SKILL);
+        SLOW_DOWN_SKILL = new SlowDownSkill(hitBallPlugin, "lockplayers");
+        STATIC_SKILLS.add(SLOW_DOWN_SKILL);
+        LOCK_PLAYERS_SKILL = new LockPlayersSkill(hitBallPlugin, "slowdown");
+        STATIC_SKILLS.add(LOCK_PLAYERS_SKILL);
+        INVISIBLE_SKILL = new InvisibleSkill(hitBallPlugin, "invisible");
+        STATIC_SKILLS.add(INVISIBLE_SKILL);
     }
 
     public List<Skill> getSkillsForPlayer(Player player) {
         List<Skill> skills = new ArrayList<>();
-        for (PermissionAttachmentInfo perm : player.getEffectivePermissions()) {
-            // Example: hitball.revive
-            String name = perm.getPermission();
-            if (!name.startsWith("hitball.skill.")) continue;
-            switch (name.substring(13)) { // Change to 13 to account for the length of "hitball."
-                case "revive":
-                    skills.add(new ReviveSkill(plugin));
-                    break;
-                // Add more cases here for other skills
+        STATIC_SKILLS.forEach(skill -> {
+            if(player.isPermissionSet("hitball." + skill.getPermission())) {
+                skills.add(skill);
             }
-        }
+        });
         return skills;
     }
 

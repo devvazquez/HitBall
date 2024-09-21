@@ -36,7 +36,7 @@ public abstract class SubCommand {
 
     /**
      * @param sender The thing that ran the command
-     * @param args   The args passed into the command when run
+     * @param args   The args passed into the command when run (excluding the subcommand)
      */
     public abstract void perform(CommandSender sender, String[] args);
 

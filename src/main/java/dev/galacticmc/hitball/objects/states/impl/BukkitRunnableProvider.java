@@ -73,7 +73,7 @@ public class BukkitRunnableProvider {
                         stateManager.nextGameState(new CountDownState());
                     } else {
                         world.sendMessage(LangKey.RESTORE_COUNTDOWN.formatted());
-                        segundos = 30;
+                        segundos = 31;
                     }
                 } else if (stateManager.getPlayers().size() >= stateManager.getMaxPlayers()) {
                     cancel();

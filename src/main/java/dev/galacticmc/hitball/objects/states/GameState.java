@@ -1,6 +1,5 @@
 package dev.galacticmc.hitball.objects.states;
 
-import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import dev.galacticmc.hitball.HitBallPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
